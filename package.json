@@ -1,0 +1,33 @@
+{
+  "name": "learnblackjack",
+  "version": "1.0.0",
+  "description": "Learn to play and count in Blackjack",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrEdwinRodriguez/learnblackjack.git"
+  },
+  "author": "Edwin Rodriguez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MrEdwinRodriguez/learnblackjack/issues"
+  },
+  "homepage": "https://github.com/MrEdwinRodriguez/learnblackjack#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "config": "^3.3.3",
+    "express": "^4.17.1",
+    "express-validator": "^6.9.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.10",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.7"
+  }
+}
