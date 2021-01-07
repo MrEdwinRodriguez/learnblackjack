@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const User = require('../../models/User');
+const Profile = require('../../models/Profile');
 const config = require('config');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -35,6 +36,10 @@ router.post('/', [
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password, salt);
         await user.save();
+        const profile = new Profile({
+            user: user._id
+        })
+        await profile.save();
         const payload = {
             user: {
                 id: user.id
