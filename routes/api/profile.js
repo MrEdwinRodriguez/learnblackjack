@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('../../middleware/auth');
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const { check, validationResult } = require('express-validator');
 
 
 // GET api/profile/me
@@ -20,6 +21,30 @@ router.get('/me', auth,  async (req, res) => {
         res.status(500).send('Server Error')
     }
 });
+
+
+// POST api/profile/socre
+// get update score
+// private
+router.post('/score',  [
+    check('score', 'A new score is requires').not().isEmpty(),
+    ], 
+    auth,  async (req, res) => {
+    try {
+        const profile = await Profile.findOne({ user: req.user.id });
+        if (!profile) {
+            return res.status(400).send({ msg: "There is no profile for this user"});
+        }
+        profile.score = req.body.score;
+        profile.modified = new Date();
+        await profile.save();
+        res.json(profile);  
+    } catch (error) {
+        console.error(error.message)
+        res.status(500).send('Server Error')
+    }
+});
+
 
 
 

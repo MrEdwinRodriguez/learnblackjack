@@ -6,6 +6,7 @@ const Profile = require('../../models/Profile');
 const config = require('config');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const auth = require('../../middleware/auth');
 
 // POST api/users
 // register user
@@ -60,6 +61,27 @@ router.post('/', [
     }
 });
 
+// PUT api/users
+// update user
+// Private
+router.put('/', auth, async (req, res) => {
+    console.log('here')
+    let { first_name, last_name } = req.body;
+    try {
+        console.log( req.user.id)
+        let user = await User.findOne({ _id: req.user.id });
+        if (!user) {
+            return res.status(400).json({ errors: [{ msg: 'User does not exist'}]});
+        }
+        user.first_name = first_name;
+        user.last_name = last_name;
+        await user.save();
+        res.json(user);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 
 module.exports = router;
