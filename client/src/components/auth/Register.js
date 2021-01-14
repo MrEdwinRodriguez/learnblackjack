@@ -1,4 +1,5 @@
 import React, {Fragment, useState} from 'react'
+import {Link} from 'react-router-dom';
 
 export const Register = () => {
     const [formData, setFormData] = useState({
@@ -24,43 +25,36 @@ export const Register = () => {
     
     return (
         <Fragment>
-            <h1 className="large text-primary">Sign Up</h1>
-            <p className="lead"><i className="fas fa-user"></i> Create Your Account</p>
-            <form className="form" onSubmit={e => onSubmit(e)}>
+            <section className="landing">
+            <div className="dark-overlay">
+            <div className='container'>
+            <div className="signup-form">
+                <form className="form" onSubmit={e => onSubmit(e)}>
+                <h2>Register</h2>
+                <p className="hint-text">Create your account. It's free and only takes a minute.</p>
                 <div className="form-group">
-                <input type="text" placeholder="First Name" name="first_name" value={first_name} onChange={e => onChange(e)} required />
+                    <input type="text" className="form-control" name="first_name" placeholder="First Name" value={first_name} onChange={e => onChange(e)} required />    	
                 </div>
                 <div className="form-group">
-                <input type="text" placeholder="Last Name" name="last_name" value={last_name} onChange={e => onChange(e)} required />
+                    <input type="text" className="form-control" name="last_name" placeholder="Last Name"  value={last_name} onChange={e => onChange(e)} required/>      	
                 </div>
                 <div className="form-group">
-                <input type="email" placeholder="Email Address" name="email" value={email} onChange={e => onChange(e)}/>
+                    <input type="email" className="form-control" name="email" placeholder="Email" value={email} onChange={e => onChange(e)} required />
                 </div>
                 <div className="form-group">
-                <input
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                    minLength="6"
-                    value={password}
-                    onChange={e => onChange(e)}
-                />
+                    <input type="password" className="form-control" name="password" placeholder="Password"  value={password} onChange={e => onChange(e)} required />
                 </div>
                 <div className="form-group">
-                <input
-                    type="password"
-                    placeholder="Confirm Password"
-                    name="password2"
-                    minLength="6"
-                    value={password2}
-                    onChange={e => onChange(e)}
-                />
+                    <input type="password" className="form-control" name="password2" placeholder="Confirm Password"  value={password2} onChange={e => onChange(e)} required />
+                </div>        
+                <div className="form-group">
+                    <button type="submit" className="btn btn-primary btn-lg btn-block">Register Now</button>
                 </div>
-                <input type="submit" className="btn btn-primary" value="Register" />
-            </form>
-            <p className="my-1">
-                Already have an account? <a href="login.html">Sign In</a>
-            </p>
+                </form>
+                <div class="text-center text-primary">Already have an account? <Link to="login" className="text-primary">Sign In</Link></div>
+            </div>
+            </div></div>
+            </section>
         </Fragment>
     )
 }
