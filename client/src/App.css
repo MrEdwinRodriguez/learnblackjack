@@ -73,6 +73,9 @@ img {
 .text-dark {
   color: var(--dark-color);
 }
+.text-light {
+  color: var(--light-color);
+}
 
 /* Padding */
 .p {
@@ -576,6 +579,7 @@ button {
   }
 }
 
+/* register and login form */
 .form-control {
 	height: 40px;
 	box-shadow: none;
@@ -659,3 +663,22 @@ button {
 .signup-form form a:hover {
 	text-decoration: underline;
 } 
+
+/* footer */
+.phantom {
+  display: block;
+  padding: 20px;
+  height: 60px;
+  width: 100%;
+}
+.footer {
+  background-color: var(--dark-color);
+   border-top: 1px solid #E7E7E7;
+  text-align: center;
+   padding: 20px;
+  position: fixed;
+  left: 0;
+   bottom: 0;
+   height: 60px;
+  width: 100%;
+}
