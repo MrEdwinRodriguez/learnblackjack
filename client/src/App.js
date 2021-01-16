@@ -15,10 +15,11 @@ const App = () => {
         <Navbar />
         <Route exact path='/' component={Landing} />
         <Route exact path='/register' component={Register} />
+        <Route exact path='/login' component={Login} />
         <section className='container'>
           <Switch>
             {/* <Route exact path='/register' component={Register} /> */}
-            <Route exact path='/login' component={Login} />
+            {/* <Route exact path='/login' component={Login} /> */}
           </Switch>
         </section>
         <Footer />

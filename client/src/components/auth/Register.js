@@ -51,7 +51,7 @@ export const Register = () => {
                     <button type="submit" className="btn btn-primary btn-lg btn-block">Register Now</button>
                 </div>
                 </form>
-                <div class="text-center text-primary">Already have an account? <Link to="login" className="text-light">Sign In</Link></div>
+                <div className="text-center text-primary">Already have an account? <Link to="login" className="text-light">Sign In</Link></div>
             </div>
             </div></div>
             </section>
