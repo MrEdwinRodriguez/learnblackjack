@@ -14,7 +14,7 @@ import './App.css';
 
 const App = () => {
   return (
-    <Provider stote={store}>
+    <Provider store={store}>
       <Router>
         <Fragment>
           <Navbar />
