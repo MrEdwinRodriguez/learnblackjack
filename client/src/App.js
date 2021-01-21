@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
+import Alert from './components/layout/Alert';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 
@@ -19,12 +20,11 @@ const App = () => {
         <Fragment>
           <Navbar />
           <Route exact path='/' component={Landing} />
-          <Route exact path='/register' component={Register} />
-          <Route exact path='/login' component={Login} />
-          <section className='container'>
+          <section className='container-fluid'>
+          <Alert />
             <Switch>
-              {/* <Route exact path='/register' component={Register} /> */}
-              {/* <Route exact path='/login' component={Login} /> */}
+              <Route exact path='/register' component={Register} /> */}
+              <Route exact path='/login' component={Login} />
             </Switch>
           </section>
           <Footer />
