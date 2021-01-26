@@ -36,11 +36,11 @@ const Login = ({ login, isAuthenticated }) => {
                     <input type="password" className="form-control" name="password" placeholder="Password"  value={password} onChange={e => onChange(e)} required />
                 </div>     
                 <div className="form-group">
-                    <button type="submit" className="btn btn-primary btn-lg btn-block">Register Now</button>
+                    <button type="submit" className="btn btn-primary btn-lg btn-block">Login Now</button>
                 </div>
                 </form>
                 <div className="text-center text-primary">Forgot Password? <Link to="register" className="text-light">Send Password</Link></div>
-                <div className="text-center text-primary">Don't have an account? <Link to="register" className="text-light">Register</Link></div>
+                <div className="text-center text-primary">Don't have an account? <Link to="register" className="text-light">Registr</Link></div>
             </div>
             </div></div>
             </section>
