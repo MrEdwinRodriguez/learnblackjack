@@ -7,6 +7,10 @@ import Alert from './components/layout/Alert';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Dashboard from './components/dashboard/Dashboard';
+import Play from './components/game/Play';
+import Counting from './components/game/Counting';
+import Learn from './components/game/Learn';
+import LearnCounting from './components/game/LearnCounting';
 import PrivateRoute from './components/routing/PrivateRoute';
 import { loadUser } from './actions/auth';
 import setAuthToken from './utils/setAuthToken';
@@ -37,6 +41,10 @@ const App = () => {
               <Route exact path='/register' component={Register} /> */}
               <Route exact path='/login' component={Login} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
+              <PrivateRoute exact path='/play-black-jack' component={Play} />
+              <PrivateRoute exact path='/learn-black-jack' component={Learn} />
+              <PrivateRoute exact path='/play-black-jack-counting' component={Counting} />
+              <PrivateRoute exact path='/learn-to-play-black-jack-counting' component={LearnCounting} />
             </Switch>
           </section>
           <Footer />

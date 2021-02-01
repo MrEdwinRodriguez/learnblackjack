@@ -697,6 +697,14 @@ button {
 .text-primary-dashboard {
   color: var(--primary-color) !important;
 }
+.btn-group-vertical a {
+  text-decoration: none;
+  display: block;
+  margin: auto !important;
+  margin-top: 10px !important;
+  width: 50%;
+  text-align: center;
+}
 /* footer */
 .phantom {
   display: block;

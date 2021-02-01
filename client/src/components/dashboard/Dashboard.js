@@ -18,10 +18,10 @@ const Dashboard = ({getCurrentProfile, auth, profile}) => {
                         <div>
                         <h2 className='text-primary-dashboard'>PLAY & LEARN</h2>
                             <div class="btn-group-vertical">
-                                <button type="button" class="btn btn-primary">Play Black Jack</button>
-                                <button type="button" class="btn btn-primary">Learn Black Jack</button>
-                                <button type="button" class="btn btn-primary">Count Cards</button>
-                                <button type="button" class="btn btn-primary">Learn to Count</button>
+                                <Link to='play-black-jack' class="btn btn-primary">Play Black Jack</Link>
+                                <Link to='learn-black-jack' class="btn btn-primary">Learn Black Jack</Link>
+                                <Link to='play-black-jack-counting' class="btn btn-primary">Play With Couting</Link>
+                                <Link to='learn-to-play-black-jack-counting' class="btn btn-primary">Learn to</Link>
                             </div>
                         </div>
                     </div>
