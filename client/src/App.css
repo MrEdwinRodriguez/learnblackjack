@@ -1,10 +1,11 @@
 /* Global Styles */
 :root {
-  --primary-color: #17a2b8;
+  --primary-color: #379683;
   --dark-color: #343a40;
   --light-color: #f4f4f4;
   --danger-color: #dc3545;
   --success-color: #28a745;
+
 }
 
 * {
@@ -662,7 +663,6 @@ button {
 	padding-left: 10px;
 }    	
 .signup-form a {
-	/* color: #fff; */
 	text-decoration: underline;
 }
 .signup-form a:hover {
@@ -676,6 +676,27 @@ button {
 	text-decoration: underline;
 } 
 
+/* dashboard */
+.dashboard {
+  width: 450px;
+  margin: 0 auto;
+  padding: 30px 0;
+  font-size: 15px;
+}
+.dashboard h2 {
+  margin: 0 0 15px;
+  position: relative;
+  text-align: center;
+}
+.btn-group-vertical .btn {
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+  width: 50%;
+}
+.text-primary-dashboard {
+  color: var(--primary-color) !important;
+}
 /* footer */
 .phantom {
   display: block;
