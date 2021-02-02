@@ -1,6 +1,6 @@
 /* Global Styles */
 :root {
-  --primary-color: #379683;
+  --primary-color: #5CDB95;
   --dark-color: #343a40;
   --light-color: #f4f4f4;
   --danger-color: #dc3545;
@@ -705,6 +705,45 @@ button {
   width: 50%;
   text-align: center;
 }
+
+/* table */
+.table {
+  width: 100%;
+  height: 600px;
+  background-color: var(--primary-color);
+  border-bottom-left-radius: 480px;
+  border-bottom-right-radius: 480px;
+  border: 30px solid black;
+  border-top: 0;
+  background-color: black;
+  background-image:
+    radial-gradient(
+      #EDF5E1,
+      #379683
+    );
+}
+
+.table-title {
+  font-family: cursive;
+  text-align: center;
+  font-size: 80px;
+  color: #000 !important;
+  padding-top: 140px;
+}
+
+.table-pays {
+  text-align: center;
+  font-size: 30px;
+  color: #000 !important;
+  padding-top: -20px;
+}
+
+.table-dealer-stands {
+  text-align: center;
+  font-size: 30px;
+  color: #000 !important;
+}
+
 /* footer */
 .phantom {
   display: block;
