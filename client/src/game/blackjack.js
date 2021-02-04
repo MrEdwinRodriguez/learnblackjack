@@ -3,11 +3,11 @@ export const blackjack = {
     values: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
     deck: [],
     players: [],
-    createDeck: () => {
-        deck = [];
+    createDeck: function () {
+        let deck = [];
         for (let i = 0 ; i < this.values.length; i++) {
             for(let x = 0; x < this.suits.length; x++) {
-                const weight = parseInt(values[i]);
+                let weight = parseInt(values[i]);
                 if (values[i] == "J" || values[i] == "Q" || values[i] == "K")
                     weight = 10;
                 if (values[i] == "A")
@@ -18,43 +18,44 @@ export const blackjack = {
         }
         this.deck = deck;
     },
-    shuffle: () => {
+    shuffle: function () {
         for (let i = 0; i < 1000; i++) {
             const location1 = Math.floor((Math.random() * this.deck.length));
             const location2 = Math.floor((Math.random() * this.deck.length));
             const tmp = this.deck[location1];
-            deck[location1] = this.deck[location2];
-            deck[location2] = tmp;
+            this.deck[location1] = this.deck[location2];
+            this.deck[location2] = tmp;
         }
-        this.deck = deck;
     },
-    createPlayers: (num) => {
-        players = [];
+    createPlayers: function (num) {
+        let players = [];
         for (let i = 1; i <= num; i++) {
             const hand = new Array();
             const player = { Name: 'Player ' + i, ID: i, Points: 0, Hand: hand };
             players.push(player);
         }
+        this.players = players;
     },
-    startblackjack: (players = 2) => {
+    startblackjack: function (players) {
+        let playerTotal = players || 2;
         // deal 2 cards to every player object
         currentPlayer = 0;
         this.createDeck();
         this.shuffle();
-        this.createPlayers(players);
+        this.createPlayers(playerTotal);
         this.dealHands();
     },
-    dealHands: () => {
+    dealHands: function() {
         for(let  i = 0; i < 2; i++) {
             for (let x = 0; x < players.length; x++) {
                 //card will have the card selected, pop will update the deck
                 var card = deck.pop();
-                players[x].Hand.push(card);
+                this.players[x].Hand.push(card);
             }
         }
     },
-    hit: (player) => {
-        var card = deck.pop();
+    hit: function (player) {
+        var card = this.deck.pop();
         this.players[player].Hand.push(card);
     }
 
