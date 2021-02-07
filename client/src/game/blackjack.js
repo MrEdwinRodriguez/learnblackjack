@@ -1,6 +1,6 @@
-const blackjack = () => {
+const blackjack = function () {
     return {
-            suite: ["Spades", "Hearts", "Diamonds", "Clubs"],
+            suits: '♠︎ ♥︎ ♣︎ ♦︎'.split(' '),
             values: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
             deck: [],
             players: [],
@@ -13,7 +13,7 @@ const blackjack = () => {
                             weight = 10;
                         if (this.values[i] == "A")
                             weight = 11;
-                        const card = { Value: this.values[i], Suit: this.suits[x], Weight: weight };
+                        const card = { value: this.values[i], suit: this.suits[x], weight: weight };
                         deck.push(card);
                     }
                 }
@@ -32,7 +32,7 @@ const blackjack = () => {
                 let players = [];
                 for (let i = 1; i <= num; i++) {
                     const hand = new Array();
-                    const player = { Name: 'Player ' + i, ID: i, Points: 0, Hand: hand };
+                    const player = { name: 'Player ' + i, id: i, Points: 0, hand: hand };
                     players.push(player);
                 }
                 this.players = players;
@@ -51,13 +51,13 @@ const blackjack = () => {
                     for (let x = 0; x < this.players.length; x++) {
                         //card will have the card selected, pop will update the deck
                         var card = this.deck.pop();
-                        this.players[x].Hand.push(card);
+                        this.players[x].hand.push(card);
                     }
                 }
             },
             hit: function (player) {
                 var card = this.deck.pop();
-                this.players[player].Hand.push(card);
+                this.players[player].hand.push(card);
             }
 }    
 }
