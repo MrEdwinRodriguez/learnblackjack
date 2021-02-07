@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import {Link, Redirect} from 'react-router-dom';
 import  { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profile';
+import blackjack  from '../../game/blackjack';
 
-const Play = ({getCurrentProfile, auth, profile}) => {
+const Play = ({getCurrentProfile}) => {
     useEffect(() => {
         getCurrentProfile();
     }, []);
 
+    console.log(blackjack())
     return (
         <Fragment>
             <section className="landing">
@@ -34,8 +36,7 @@ const Play = ({getCurrentProfile, auth, profile}) => {
 
 Play.propTypes = {
     getCurrentProfile: PropTypes.func.isRequired,
-    // auth: PropTypes.object.isRequired,
-    // profile: PropTypes.object.isRequired,
+    // blackjack: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({
