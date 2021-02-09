@@ -825,6 +825,23 @@ button {
 
 .cardList{
   margin: auto;
+  width: 20%;
+}
 
+@media only screen and (max-width: 1045px) {
+  .cardList{
+    width: 35%;
+  }
+}
 
+@media only screen and (max-width: 650px) {
+  .cardList{
+    width: 55%;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .cardList{
+    width: 85%;
+  }
 }
