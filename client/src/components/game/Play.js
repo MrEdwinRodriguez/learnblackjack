@@ -14,6 +14,7 @@ const Play = ({getCurrentProfile}) => {
     gameObj.createDeck();
     gameObj.shuffle();
     gameObj.startblackjack(2);
+    console.log(gameObj.dealerPlay())
     let dealerHandObj = gameObj.players.slice(-1)[0];
     // const playerHands = gameObj.players.map(player=> (
     let playerHands = null

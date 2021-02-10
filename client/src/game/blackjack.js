@@ -58,7 +58,56 @@ const blackjack = function () {
             hit: function (player) {
                 var card = this.deck.pop();
                 this.players[player].hand.push(card);
-            }
+            },
+            dealerPlay: function () {
+                let that = this;
+                let dealer = this.players.slice(-1)[0];
+                var dealerHandValue = dealer.hand.reduce(function(a, b){ 
+                    return a.weight + b.weight;  
+                })
+                if (dealerHandValue == 21) {
+                    const player = this.players[0];
+                    let playerHandValue = player.hand.reduce(function(a, b){ 
+                        return a.weight + b.weight;  
+                    })
+                    if ( dealerHandValue == playerHandValue && player.hand.length == 2 ) {
+                        return "push";
+                    } else {
+                        return "Loss";
+                    }
+                }
+                while (dealerHandValue <= 17) {
+                    var card = this.deck.pop();
+                    dealerHandValue = dealerHandValue + card.weight
+                    that.players[this.players.length - 1].hand.push(card);
+                }
+   
+                if (dealerHandValue > 21) {
+                    const playerHand = this.getScore(0);
+                    if (playerHand < 22 ) {
+                        return "Win";
+                    }
+                } else {
+                    return this.compareHands(dealerHandValue);
+                }
+            },
+            compareHands: function (dealerScore) {
+                const playerHandValue = this.getScore(0);
+                if (dealerScore == playerHandValue ) {
+                    return 'Push';
+                } else if (dealerScore > playerHandValue) {
+                    return 'Loss';
+                } else {
+                    return "Win";
+                }
+            },
+            getScore: function (playerIndex) {
+                const player = this.players[playerIndex];
+                let playerHandValue = player.hand.reduce(function(a, b){ 
+                    return a.weight + b.weight;  
+                })
+                return playerHandValue;
+            },
 }    
 }
 
