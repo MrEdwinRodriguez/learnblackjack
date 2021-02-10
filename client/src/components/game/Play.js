@@ -11,34 +11,44 @@ const Play = ({getCurrentProfile}) => {
     }, []);
 
     const gameObj = blackjack()
-    console.log(gameObj)
     gameObj.createDeck();
     gameObj.shuffle();
     gameObj.startblackjack(2);
-    console.log(gameObj)
-    let dealerHand = gameObj.players.slice(-1)[0];
-    console.log(dealerHand)
-    console.log(gameObj)
-    console.log(gameObj.players[0])
+    let dealerHandObj = gameObj.players.slice(-1)[0];
     // const playerHands = gameObj.players.map(player=> (
     let playerHands = null
-        if (gameObj.players[0]) {
-            console.log(gameObj.players[0])
-            playerHands = gameObj.players[0].hand.map(card => {
-                 return <li className="cardItem" weight={card.weight} key="1">
-                    <div className='card red'>
-                        <div className='card-topleft'>
-                            <div className='card-corner-rank'>{card.value}</div>
-                            <div className='card-corner-suit'>{card.suit}</div>
-                        </div>
-                        <div className='card-bottomright'>
-                            <div className='card-corner-rank'>{card.value}</div>
-                            <div className='card-corner-suit'>{card.suit}</div>
-                        </div>
+    if (gameObj.players[0]) {
+        console.log(gameObj.players[0])
+        playerHands = gameObj.players[0].hand.map(card => {
+                return <li className="cardItem" weight={card.weight} key="1">
+                <div className='card red'>
+                    <div className='card-topleft'>
+                        <div className='card-corner-rank'>{card.value}</div>
+                        <div className='card-corner-suit'>{card.suit}</div>
                     </div>
-                </li>
-            })
-        }
+                    <div className='card-bottomright'>
+                        <div className='card-corner-rank'>{card.value}</div>
+                        <div className='card-corner-suit'>{card.suit}</div>
+                    </div>
+                </div>
+            </li>
+        })
+    }
+    let dealerHand = dealerHandObj.hand.map(card => {
+            return <li className="cardItem" weight={card.weight} key="1">
+            <div className='card red'>
+                <div className='card-topleft'>
+                    <div className='card-corner-rank'>{card.value}</div>
+                    <div className='card-corner-suit'>{card.suit}</div>
+                </div>
+                <div className='card-bottomright'>
+                    <div className='card-corner-rank'>{card.value}</div>
+                    <div className='card-corner-suit'>{card.suit}</div>
+                </div>
+            </div>
+        </li>
+    })
+
 
     // ));
     return (
@@ -47,6 +57,13 @@ const Play = ({getCurrentProfile}) => {
                 <div className="dark-overlay">
                     <div className='container'>
                         <div className='table'>
+                        <div className='hold-dealer'>
+                            <div class='dealer'>
+                                <ul className='cardList'>
+                                    {playerHands ? playerHands : <li></li>}
+                                </ul>
+                            </div>
+                        </div>
                             <h2 className='table-title'>BlackJack</h2>
                             <h5 className='table-pays'>Pays 2 to 3</h5>
                             <h5 className='table-dealer-stands'>Dealer Stand on 17</h5>

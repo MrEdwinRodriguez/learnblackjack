@@ -728,7 +728,7 @@ button {
   text-align: center;
   font-size: 80px;
   color: #000 !important;
-  padding-top: 140px;
+  padding-top: 10px;
 }
 
 .table-pays {
@@ -746,8 +746,14 @@ button {
 
 .hold-player-one {
   width: 100%;
-  padding-top: 70px;
+  padding-top: 30px;
 }
+
+.hold-dealer {
+  width: 100%;
+  padding-top: 30px;
+}
+
 .player-position-one {
   height: 90px;
   /* background-color: #000; */
@@ -755,17 +761,17 @@ button {
   margin: auto !important;
 }
 
-.hold-player-two {
+/* .hold-player-two {
   width: 100%;
   /* padding-top: px; */
-}
+/* } */
 .player-position-two {
   height: 80px;
   width: 80px;
   background-color: #000;
   border-radius: 50%;
   margin: auto !important;
-}
+} */
 
 /* footer */
 .phantom {
