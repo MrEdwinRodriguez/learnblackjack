@@ -793,6 +793,7 @@ button {
   background-color: #ffffff;
   box-shadow: 0 0.0625em 0.125em rgba(0, 0, 0, 0.15);
   border-radius: 0.25em;
+  border-width: 3px;
 }
 
 .card.red {
@@ -824,24 +825,6 @@ button {
 }
 
 .cardList{
-  margin: auto;
-  width: 20%;
-}
-
-@media only screen and (max-width: 1045px) {
-  .cardList{
-    width: 35%;
-  }
-}
-
-@media only screen and (max-width: 650px) {
-  .cardList{
-    width: 55%;
-  }
-}
-
-@media only screen and (max-width: 400px) {
-  .cardList{
-    width: 85%;
-  }
+  display: table;
+  margin: 0 auto;
 }
