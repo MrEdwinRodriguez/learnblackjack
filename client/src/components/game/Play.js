@@ -49,6 +49,10 @@ const Play = ({getCurrentProfile}) => {
         </li>
     })
 
+    const hitMe = e => {
+        gameObj.hit(0)
+        console.log(gameObj)
+    }
 
     // ));
     return (
@@ -73,6 +77,14 @@ const Play = ({getCurrentProfile}) => {
                                         {playerHands ? playerHands : <li></li>}
                                     </ul>
                                 </div>
+                            </div>
+                        </div>
+                        <div className='blackjack-buttons'>
+                            <div>
+                                <button type="button" className="btn btn-success" onClick={e => hitMe(e)} >Hit</button>
+                                <button type="button" className="btn btn-warning">Double</button>
+                                <button type="button" className="btn btn-primary">Split</button>
+                                <button type="button" className="btn btn-danger">Stay</button>
                             </div>
                         </div>
                     </div>
