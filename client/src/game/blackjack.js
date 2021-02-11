@@ -33,6 +33,7 @@ const blackjack = function () {
                 for (let i = 1; i <= num; i++) {
                     const hand = new Array();
                     const player = { name: 'Player ' + i, id: i, Points: 0, hand: hand };
+                    player.hands = 1;
                     players.push(player);
                 }
                 this.players = players;
@@ -108,6 +109,17 @@ const blackjack = function () {
                 })
                 return playerHandValue;
             },
+            splitAce: function (playerIndex) {
+                let player = this.players[playerIndex];
+                let currentHand = player.hand; //array of cards
+                player.hands ++;
+            },
+            split: function (playerIndex) {
+                let player = this.players[playerIndex];
+                let currentHand = player.hand; //array of cards
+                player.hands ++;
+
+            }
 }    
 }
 

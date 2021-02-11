@@ -4,6 +4,7 @@ import {Link, Redirect} from 'react-router-dom';
 import  { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profile';
 import blackjack  from '../../game/blackjack';
+import { Double } from 'bson';
 
 const Play = ({getCurrentProfile}) => {
     useEffect(() => {
@@ -14,7 +15,6 @@ const Play = ({getCurrentProfile}) => {
     gameObj.createDeck();
     gameObj.shuffle();
     gameObj.startblackjack(2);
-    console.log(gameObj.dealerPlay())
     let dealerHandObj = gameObj.players.slice(-1)[0];
     // const playerHands = gameObj.players.map(player=> (
     let playerHands = null
@@ -50,11 +50,27 @@ const Play = ({getCurrentProfile}) => {
         </li>
     })
 
-    const hitMe = e => {
-        gameObj.hit(0)
+    const hitMe = (player = 0) => {
+        gameObj.hit(player);
         console.log(gameObj)
+    };
+
+    const stay = (player = 0) => {
+        gameObj.dealerPlay();
+        console.log(gameObj)
+    };
+
+    const double = (player = 0) => {
+        gameObj.hit(player);
+        gameObj.dealerPlay();
     }
 
+    const split = (player = 0) => {
+        // check if aces
+        // call split ace if aces
+        gameObj.splitAce(0);
+        // else call split 
+    }
     // ));
     return (
         <Fragment>
@@ -82,10 +98,10 @@ const Play = ({getCurrentProfile}) => {
                         </div>
                         <div className='blackjack-buttons'>
                             <div>
-                                <button type="button" className="btn btn-success" onClick={e => hitMe(e)} >Hit</button>
-                                <button type="button" className="btn btn-warning">Double</button>
-                                <button type="button" className="btn btn-primary">Split</button>
-                                <button type="button" className="btn btn-danger">Stay</button>
+                                <button type="button" className="btn btn-success" onClick={() => hitMe()} >Hit</button>
+                                <button type="button" className="btn btn-warning" onClick={() => double()}>Double</button>
+                                <button type="button" className="btn btn-primary" onClick={() => split()}>Split</button>
+                                <button type="button" className="btn btn-danger" onClick={() => stay()}>Stay</button>
                             </div>
                         </div>
                     </div>
