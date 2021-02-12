@@ -2,8 +2,12 @@ const blackjack = function () {
     return {
             suits: '♠︎ ♥︎ ♣︎ ♦︎'.split(' '),
             values: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
+            push: 'Push',
+            win: "Win",
+            loss: "Loss",
             deck: [],
             players: [],
+            currentGameOutcome: [],
             createDeck: function () {
                 let deck = [];
                 for (let i = 0 ; i < this.values.length; i++) {
@@ -94,12 +98,29 @@ const blackjack = function () {
             compareHands: function (dealerScore) {
                 const playerHandValue = this.getScore(0);
                 if (dealerScore == playerHandValue ) {
-                    return 'Push';
+                    this.currentGameOutcome.push(this.push);
                 } else if (dealerScore > playerHandValue) {
-                    return 'Loss';
+                    this.currentGameOutcome.push(this.loss);
                 } else {
-                    return "Win";
+                    this.currentGameOutcome.push(this.win);
                 }
+            },
+            compareHandsWithSplit: function (dealerScore, playerIndex=0) {
+                const player = this.players[playerIndex];
+                let outcomes = ""
+                if (player.hands) {
+                    const playerHands = this.getScoreWithSplit(players.hands);
+                    outcomes = playerHands.map(playerHand => {
+                        if (dealerScore == playerHand  ) {
+                            this.currentGameOutcome.push(this.push);
+                        } else if (dealerScore > playerHand ) {
+                            this.currentGameOutcome.push(this.loss);
+                        } else {
+                            this.currentGameOutcome.push(this.win);
+                        }
+                    })
+                }
+                this.currentGameOutcome = outcomes;
             },
             getScore: function (playerIndex) {
                 const player = this.players[playerIndex];
@@ -107,6 +128,14 @@ const blackjack = function () {
                     return a.weight + b.weight;  
                 })
                 return playerHandValue;
+            },
+            getScoreWithSplit: function (aHands) {
+                const hands = aHands;
+                return hands.map(hand  => {
+                    return hand.reduce(function(a, b){ 
+                        return a.weight + b.weight;  
+                    })
+                })
             },
             splitAce: function (playerIndex) {
                 let player = this.players[playerIndex];
@@ -119,12 +148,18 @@ const blackjack = function () {
                 this.players[playerIndex].hands[0].push(firstCard);                 
                 const secondCard = this.deck.pop();
                 this.players[playerIndex].hands[1].push(secondCard);
+                this.dealerPlay();
+                console.log(this)
             },
             split: function (playerIndex) {
                 let player = this.players[playerIndex];
-                console.log('line 119', player)
                 let currentHand = player.hand; //array of cards
-                player.hands ++;
+                player.hands = [
+                    [currentHand[0]],
+                    [currentHand[1]]
+                ]
+                const firstCard = this.deck.pop();
+                this.players[playerIndex].hands[0].push(firstCard); 
 
             }
 }    

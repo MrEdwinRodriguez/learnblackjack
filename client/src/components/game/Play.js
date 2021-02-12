@@ -52,7 +52,11 @@ const Play = ({getCurrentProfile}) => {
 
     const hitMe = (player = 0) => {
         gameObj.hit(player);
-        console.log(gameObj)
+        const currentScore = gameObj.players[player];
+        if (currentScore > 21 )
+            gameObj.currentGameOutcome.push(this.loss);
+        else if (currentScore == 21)
+            gameObj.dealerPlay();
     };
 
     const stay = (player = 0) => {
@@ -66,13 +70,12 @@ const Play = ({getCurrentProfile}) => {
     }
 
     const split = (player = 0) => {
-        // check if aces
-        console.log(gameObj.players[0].hand[0].value)
         var cardValue = gameObj.players[player].hand[0].value;
         if (cardValue == 'A') {
             gameObj.splitAce(player); 
         } else {
-            gameObj.split(player)
+            gameObj.splitAce(player); 
+            // gameObj.split(player)
         }
     }
     // ));
