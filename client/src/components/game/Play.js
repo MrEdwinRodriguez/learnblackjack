@@ -67,9 +67,13 @@ const Play = ({getCurrentProfile}) => {
 
     const split = (player = 0) => {
         // check if aces
-        // call split ace if aces
-        gameObj.splitAce(0);
-        // else call split 
+        console.log(gameObj.players[0].hand[0].value)
+        var cardValue = gameObj.players[player].hand[0].value;
+        if (cardValue == 'A') {
+            gameObj.splitAce(player); 
+        } else {
+            gameObj.split(player)
+        }
     }
     // ));
     return (

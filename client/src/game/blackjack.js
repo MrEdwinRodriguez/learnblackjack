@@ -33,7 +33,6 @@ const blackjack = function () {
                 for (let i = 1; i <= num; i++) {
                     const hand = new Array();
                     const player = { name: 'Player ' + i, id: i, Points: 0, hand: hand };
-                    player.hands = 1;
                     players.push(player);
                 }
                 this.players = players;
@@ -112,10 +111,18 @@ const blackjack = function () {
             splitAce: function (playerIndex) {
                 let player = this.players[playerIndex];
                 let currentHand = player.hand; //array of cards
-                player.hands ++;
+                player.hands = [
+                    [currentHand[0]],
+                    [currentHand[1]]
+                ]
+                const firstCard = this.deck.pop();
+                this.players[playerIndex].hands[0].push(firstCard);                 
+                const secondCard = this.deck.pop();
+                this.players[playerIndex].hands[1].push(secondCard);
             },
             split: function (playerIndex) {
                 let player = this.players[playerIndex];
+                console.log('line 119', player)
                 let currentHand = player.hand; //array of cards
                 player.hands ++;
 
