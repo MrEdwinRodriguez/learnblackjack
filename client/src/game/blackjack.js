@@ -32,19 +32,17 @@ const blackjack = function () {
                     this.deck[location2] = tmp;
                 }
             },
-            createPlayers: function (num) {
-                let players = [];
+            createPlayers: function (num=2) {
+                let new_players = [];
                 for (let i = 1; i <= num; i++) {
                     const hand = new Array();
                     const player = { name: 'Player ' + i, id: i, Points: 0, hand: hand, hands: [] };
-                    players.push(player);
+                    new_players.push(player);
                 }
-                this.players = players;
+                this.players = new_players;
             },
             startblackjack: function (players) {
                 let playerTotal = players || 2;
-                // deal 2 cards to every player object
-                // currentPlayer = 0;
                 this.createDeck();
                 this.shuffle();
                 this.createPlayers(playerTotal);
@@ -59,8 +57,10 @@ const blackjack = function () {
                     }
                 }
             },
-            hit: function (player) {
+            hit: function (player=0) {
                 var card = this.deck.pop();
+                console.log('this', this)
+                console.log('line 63', card)
                 this.players[player].hand.push(card);
                 var score = this.getScore(player, null);
                 if (score == 21) {
@@ -127,6 +127,7 @@ const blackjack = function () {
                 if (dealerHandValue > 21) {
                     const playerHand = this.getScore(0);
                     if (playerHand < 22 ) {
+                        this.currentGameOutcome = this.win;
                         return "Win";
                     }
                 } else {
@@ -167,6 +168,7 @@ const blackjack = function () {
                         return a.weight + b.weight;  
                     })
                 } else {
+                    console.log('line 170', player)
                     playerHandValue = player.hand.reduce(function(a, b){ 
                         return a.weight + b.weight;  
                     })

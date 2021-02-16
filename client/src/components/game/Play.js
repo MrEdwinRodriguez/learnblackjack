@@ -1,4 +1,4 @@
-import React, {Fragment ,useEffect} from 'react'
+import React, {Fragment ,useEffect, useState} from 'react'
 import PropTypes from 'prop-types';
 import {Link, Redirect} from 'react-router-dom';
 import  { connect } from 'react-redux';
@@ -11,16 +11,39 @@ const Play = ({getCurrentProfile}) => {
         getCurrentProfile();
     }, []);
 
-    const gameObj = blackjack()
+    const [formData, setFormData] = useState({
+        hand: [],
+        hands: [],
+        dealer: [],
+        gamePlayers: [],
+        outcomes: []
+    })
+    let {hand, hands, dealer, gamePlayers, outcomes } = formData;
+
+    let dealerHandObj = null;
+    let dealerHand = null;
+    let playerHands = null;
+    const gameObj = blackjack();
     gameObj.createDeck();
     gameObj.shuffle();
-    gameObj.startblackjack(2);
-    let dealerHandObj = gameObj.players.slice(-1)[0];
-    // const playerHands = gameObj.players.map(player=> (
-    let playerHands = null
-    if (gameObj.players[0]) {
-        console.log(gameObj.players[0])
-        playerHands = gameObj.players[0].hand.map(card => {
+    if (dealer && dealer.length > 0) {
+        dealerHand = dealer.map(card => {
+            return <li className="cardItem" weight={card.weight} key="1">
+                <div className='card red'>
+                    <div className='card-topleft'>
+                        <div className='card-corner-rank'>{card.value}</div>
+                        <div className='card-corner-suit'>{card.suit}</div>
+                    </div>
+                    <div className='card-bottomright'>
+                        <div className='card-corner-rank'>{card.value}</div>
+                        <div className='card-corner-suit'>{card.suit}</div>
+                    </div>
+                </div>
+            </li>
+        })
+    }
+    if (hand && hand.length > 0) {
+        playerHands = hand.map(card => {
                 return <li className="cardItem" weight={card.weight} key="1">
                 <div className='card red'>
                     <div className='card-topleft'>
@@ -35,33 +58,26 @@ const Play = ({getCurrentProfile}) => {
             </li>
         })
     }
-    let dealerHand = dealerHandObj.hand.map(card => {
-            return <li className="cardItem" weight={card.weight} key="1">
-            <div className='card red'>
-                <div className='card-topleft'>
-                    <div className='card-corner-rank'>{card.value}</div>
-                    <div className='card-corner-suit'>{card.suit}</div>
-                </div>
-                <div className='card-bottomright'>
-                    <div className='card-corner-rank'>{card.value}</div>
-                    <div className='card-corner-suit'>{card.suit}</div>
-                </div>
-            </div>
-        </li>
-    })
+
+    const deal = (players = 2) => {
+        gameObj.startblackjack(players);
+        dealerHandObj = gameObj.players.slice(-1)[0];
+        setFormData({ ...formData, hand: gameObj.players[0].hand, dealer: dealerHandObj.hand, gamePlayers: gameObj.players });
+    };
 
     const hitMe = (player = 0) => {
+        if (gameObj.players.length == 0) gameObj.players = gamePlayers;
         gameObj.hit(player);
         const currentScore = gameObj.players[player];
         if (currentScore > 21 )
             gameObj.currentGameOutcome.push(this.loss);
         else if (currentScore == 21)
             gameObj.dealerPlay();
+        setFormData({...formData, hand: gameObj.players[0].hand});
     };
 
     const stay = (player = 0) => {
         gameObj.dealerPlay();
-        console.log(gameObj)
     };
 
     const double = (player = 0) => {
@@ -74,9 +90,9 @@ const Play = ({getCurrentProfile}) => {
         if (cardValue == 'A') {
             gameObj.splitAce(player); 
         } else {
-            gameObj.splitAce(player); 
-            // gameObj.split(player)
+            gameObj.split(player); 
         }
+        setFormData({...formData, hand: [], hands: gameObj.hands})
     }
     // ));
     return (
@@ -88,7 +104,7 @@ const Play = ({getCurrentProfile}) => {
                         <div className='hold-dealer'>
                             <div class='dealer'>
                                 <ul className='cardList'>
-                                    {playerHands ? playerHands : <li></li>}
+                                    {dealerHand ? dealerHand : <li></li>}
                                 </ul>
                             </div>
                         </div>
@@ -105,6 +121,7 @@ const Play = ({getCurrentProfile}) => {
                         </div>
                         <div className='blackjack-buttons'>
                             <div>
+                                <button type="button" className="btn btn-success" onClick={() => deal()} >Deal</button>
                                 <button type="button" className="btn btn-success" onClick={() => hitMe()} >Hit</button>
                                 <button type="button" className="btn btn-warning" onClick={() => double()}>Double</button>
                                 <button type="button" className="btn btn-primary" onClick={() => split()}>Split</button>
