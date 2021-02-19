@@ -63,7 +63,7 @@ const Play = ({getCurrentProfile}) => {
         let key = 0; 
         displayOutcome = outcomes.map(outcome => {
             key++;
-            return <li key={key}>{outcome}</li>
+            return <li key={key}><h1>{outcome}</h1></li>
         })
     }
 
@@ -101,6 +101,7 @@ const Play = ({getCurrentProfile}) => {
     }
 
     const split = (player = 0) => {
+        if (gameObj.players.length == 0) gameObj.players = gamePlayers;
         var cardValue = gameObj.players[player].hand[0].value;
         if (cardValue == 'A') {
             gameObj.splitAce(player); 

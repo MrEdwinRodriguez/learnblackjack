@@ -165,15 +165,19 @@ const blackjack = function () {
                 const player = this.players[playerIndex];
                 let playerHandValue = null;
                 if (handIndex) {
-                    playerHandValue = player.hands[handIndex].reduce(function(a, b){ 
-                        return a.weight + b.weight;  
+                    playerHandValue = player.hands[handIndex].reduce(function(total, currentValue){ 
+                        let actualTotal = total && total.weight ? total.weight : total;
+                        let weight = currentValue && currentValue.weight ? currentValue.weight : currentValue;
+                        return actualTotal + weight;  
                     })
                 } else {
-                    console.log('line 170', player)
-                    playerHandValue = player.hand.reduce(function(a, b){ 
-                        return a.weight + b.weight;  
+                    playerHandValue = player.hand.reduce(function(total, currentValue){ 
+                        let actualTotal = total && total.weight ? total.weight : total;
+                        let weight = currentValue && currentValue.weight ? currentValue.weight : currentValue;
+                        return actualTotal + weight;  
                     })
                 }
+                console.log(playerHandValue)
                 return playerHandValue;
             },
             getScoreWithSplit: function (aHands) {
