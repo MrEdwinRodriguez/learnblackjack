@@ -16,13 +16,14 @@ const Play = ({getCurrentProfile}) => {
         hands: [],
         dealer: [],
         gamePlayers: [],
-        outcomes: []
+        outcomes: [],
     })
     let {hand, hands, dealer, gamePlayers, outcomes } = formData;
 
     let dealerHandObj = null;
     let dealerHand = null;
     let playerHands = null;
+    let displayOutcome = null;
     const gameObj = blackjack();
     gameObj.createDeck();
     gameObj.shuffle();
@@ -58,8 +59,19 @@ const Play = ({getCurrentProfile}) => {
             </li>
         })
     }
+    if (outcomes && outcomes.length > 0 && Array.isArray(outcomes)) {
+        let key = 0; 
+        displayOutcome = outcomes.map(outcome => {
+            key++;
+            return <li key={key}>{outcome}</li>
+        })
+    }
 
     const deal = (players = 2) => {
+        if (outcomes.length > 0 ) {
+            setFormData({ ...formData, currentGameOutcome: []});
+            displayOutcome = null;
+        }
         gameObj.startblackjack(players);
         dealerHandObj = gameObj.players.slice(-1)[0];
         setFormData({ ...formData, hand: gameObj.players[0].hand, dealer: dealerHandObj.hand, gamePlayers: gameObj.players });
@@ -77,7 +89,10 @@ const Play = ({getCurrentProfile}) => {
     };
 
     const stay = (player = 0) => {
+        if (gameObj.players.length == 0) gameObj.players = gamePlayers;
         gameObj.dealerPlay();
+        dealerHandObj = gameObj.players.slice(-1)[0];
+        setFormData({...formData, dealer: dealerHandObj.hand, outcomes: gameObj.currentGameOutcome});
     };
 
     const double = (player = 0) => {
@@ -108,6 +123,10 @@ const Play = ({getCurrentProfile}) => {
                                 </ul>
                             </div>
                         </div>
+                        <div> 
+                            {displayOutcome ? displayOutcome : ""}
+                        </div>
+                        <div className='game_outcome'></div>
                             <h2 className='table-title'>BlackJack</h2>
                             <h5 className='table-pays'>Pays 2 to 3</h5>
                             <h5 className='table-dealer-stands'>Dealer Stand on 17</h5>

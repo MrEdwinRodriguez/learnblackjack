@@ -59,8 +59,6 @@ const blackjack = function () {
             },
             hit: function (player=0) {
                 var card = this.deck.pop();
-                console.log('this', this)
-                console.log('line 63', card)
                 this.players[player].hand.push(card);
                 var score = this.getScore(player, null);
                 if (score == 21) {
@@ -105,7 +103,7 @@ const blackjack = function () {
                 var dealerHandValue = dealer.hand.reduce(function(a, b){ 
                     return a.weight + b.weight;  
                 })
-                if (dealerHandValue == 21) {
+                if (dealerHandValue == 21 && dealer.hand.length == 2) {
                     const player = this.players[0];
                     let playerHandValue = player.hand.reduce(function(a, b){ 
                         return a.weight + b.weight;  
@@ -118,10 +116,13 @@ const blackjack = function () {
                         return "Loss";
                     }
                 }
-                while (dealerHandValue <= 17) {
+                while (dealerHandValue < 17) {
                     var card = this.deck.pop();
                     dealerHandValue = dealerHandValue + card.weight
                     that.players[this.players.length - 1].hand.push(card);
+                }
+                while (dealerHandValue >= 17 && dealerHandValue < 22) {
+                    return this.compareHands(dealerHandValue);
                 }
    
                 if (dealerHandValue > 21) {
