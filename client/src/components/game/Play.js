@@ -93,9 +93,10 @@ const Play = ({getCurrentProfile}) => {
     const hitMe = (player = 0) => {
         if (gameObj.players.length == 0) gameObj.players = gamePlayers;
         const currentOutcome = gameObj.hit(player);
-        const currentScore = gameObj.players[player];
+        const currentScore = gameObj.getScore(player);
+        console.log('line 97', currentScore)
         if (currentScore > 21 ) {
-            gameObj.currentGameOutcome.push(this.loss);
+            gameObj.currentGameOutcome.push(gameObj.loss);
             setFormData({...formData, hand: gameObj.players[0].hand, outcomes: currentOutcome.length > 0 ? currentOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true});
         }
         else if (currentScore == 21) {
