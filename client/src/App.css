@@ -842,3 +842,7 @@ button {
   justify-content: center;
   align-items: center;
 }
+
+button:disabled {
+  background: #ccc;
+}

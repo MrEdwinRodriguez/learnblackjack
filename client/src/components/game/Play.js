@@ -17,8 +17,13 @@ const Play = ({getCurrentProfile}) => {
         dealer: [],
         gamePlayers: [],
         outcomes: [],
+        disableDeal: false,
+        disableHit: true,
+        disableDouble: true,
+        disableSplit: true,
+        disableStay: true,
     })
-    let {hand, hands, dealer, gamePlayers, outcomes } = formData;
+    let {hand, hands, dealer, gamePlayers, outcomes, disableDeal, disableHit, disableDouble, disableSplit, disableStay } = formData;
 
     let dealerHandObj = null;
     let dealerHand = null;
@@ -72,44 +77,58 @@ const Play = ({getCurrentProfile}) => {
             setFormData({ ...formData, outcomes: []})
             displayOutcome = null;
         }
-        console.log('line 76', outcomes)
-        gameObj.startblackjack(players);
+        const evaluateInitialHand = gameObj.startblackjack(players);
         dealerHandObj = gameObj.players.slice(-1)[0];
-        setFormData({ ...formData, hand: gameObj.players[0].hand, dealer: dealerHandObj.hand, gamePlayers: gameObj.players });
+        if (!evaluateInitialHand.hasBlackJack) {
+            if (evaluateInitialHand.playerHasDoubles) {
+                setFormData({ ...formData, hand: gameObj.players[0].hand, dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false });
+            } else {
+                setFormData({ ...formData, hand: gameObj.players[0].hand, dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false });
+            }
+        } else {
+            setFormData({ ...formData, outcomes: gameObj.currentGameOutcome})
+        } 
     };
 
     const hitMe = (player = 0) => {
         if (gameObj.players.length == 0) gameObj.players = gamePlayers;
         const currentOutcome = gameObj.hit(player);
         const currentScore = gameObj.players[player];
-        if (currentScore > 21 )
+        if (currentScore > 21 ) {
             gameObj.currentGameOutcome.push(this.loss);
-        else if (currentScore == 21)
+            setFormData({...formData, hand: gameObj.players[0].hand, outcomes: currentOutcome.length > 0 ? currentOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true});
+        }
+        else if (currentScore == 21) {
             gameObj.dealerPlay();
-        setFormData({...formData, hand: gameObj.players[0].hand, outcomes: currentOutcome.length > 0 ? currentOutcome : []});
+            setFormData({...formData, hand: gameObj.players[0].hand, outcomes: currentOutcome.length > 0 ? currentOutcome : [], disableDeal: false, disableHit: false,  disableDouble: true, disableSplit: true, disableStay: true});
+        } else {
+            setFormData({...formData, hand: gameObj.players[0].hand, outcomes: currentOutcome.length > 0 ? currentOutcome : [], disableDouble: true, disableSplit: true});
+        }
     };
 
     const stay = (player = 0) => {
         if (gameObj.players.length == 0) gameObj.players = gamePlayers;
         gameObj.dealerPlay();
         dealerHandObj = gameObj.players.slice(-1)[0];
-        setFormData({...formData, dealer: dealerHandObj.hand, outcomes: gameObj.currentGameOutcome});
+        setFormData({...formData, dealer: dealerHandObj.hand, outcomes: gameObj.currentGameOutcome,  disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true});
     };
 
     const double = (player = 0) => {
         if (gameObj.players.length == 0) gameObj.players = gamePlayers;
         gameObj.hit(player);
         gameObj.dealerPlay();
-        setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hand: gameObj.players[0].hand, dealer: gameObj.players[gameObj.players.length -1].hand });
+        setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hand: gameObj.players[0].hand, dealer: gameObj.players[gameObj.players.length -1].hand, disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true });
     }
 
     const split = (player = 0) => {
         if (gameObj.players.length == 0) gameObj.players = gamePlayers;
         var cardValue = gameObj.players[player].hand[0].value;
         if (cardValue == 'A') {
-            gameObj.splitAce(player); 
+            gameObj.splitAce(player);
+            setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hands: gameObj.players[0].hands, dealer: gameObj.players[gameObj.players.length -1].hand, disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true });
         } else {
             gameObj.split(player); 
+            // TO DO : setFormData after split non ace hands
         }
         setFormData({...formData, hand: [], hands: gameObj.hands})
     }
@@ -144,11 +163,11 @@ const Play = ({getCurrentProfile}) => {
                         </div>
                         <div className='blackjack-buttons'>
                             <div>
-                                <button type="button" className="btn btn-success" onClick={() => deal()} >Deal</button>
-                                <button type="button" className="btn btn-success" onClick={() => hitMe()} >Hit</button>
-                                <button type="button" className="btn btn-warning" onClick={() => double()}>Double</button>
-                                <button type="button" className="btn btn-primary" onClick={() => split()}>Split</button>
-                                <button type="button" className="btn btn-danger" onClick={() => stay()}>Stay</button>
+                                <button type="button" className="btn btn-success" onClick={() => deal()} disabled={disableDeal} >Deal</button>
+                                <button type="button" className="btn btn-success" onClick={() => hitMe()} disabled={disableHit}>Hit</button>
+                                <button type="button" className="btn btn-success" onClick={() => double()} disabled={disableDouble}>Double</button>
+                                <button type="button" className="btn btn-success" onClick={() => split()} disabled={disableSplit}>Split</button>
+                                <button type="button" className="btn btn-danger" onClick={() => stay()} disabled={disableStay}>Stay</button>
                             </div>
                         </div>
                     </div>

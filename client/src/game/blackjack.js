@@ -5,6 +5,8 @@ const blackjack = function () {
             push: 'Push',
             win: "Win",
             loss: "Loss",
+            blackjack: "BlackJack",
+            dealerblackjack: "Dealer Blackjack",
             deck: [],
             players: [],
             currentGameOutcome: [],
@@ -47,6 +49,10 @@ const blackjack = function () {
                 this.shuffle();
                 this.createPlayers(playerTotal);
                 this.dealHands();
+                return { 
+                    hasBlackJack: this.hasBlackJack(), 
+                    playerHasDoubles: this.playerHasDoubles()
+                }
             },
             dealHands: function() {
                 for(let  i = 0; i < 2; i++) {
@@ -97,6 +103,26 @@ const blackjack = function () {
                         this.dealerPlay();
                     }
                 }
+            },
+            hasBlackJack: function (player = 0) {
+                const playerHand = this.getScore(player);
+                const dealerHand = this.getScore(this.players.length -1);
+                 if (playerHand == 21 && dealerHand == 21 ) {
+                     this.currentGameOutcome = this.push;
+                     return true;
+                 } else if (playerHand != 21 && dealerHand == 21 ) {
+                     this.currentGameOutcome = this.dealerblackjack;
+                     return true;
+                 } else if (playerHand == 21 && dealerHand != 21) {
+                     this.currentGameOutcome = this.blackjack;
+                     return true;
+                 } else {
+                     return false;
+                 }
+            },
+            playerHasDoubles: function (player=0) {
+                if (this.players[player].hand[0].weight == this.players[player].hand[1].weight) return true;
+                else return false
             },
             dealerPlay: function () {
                 let that = this;
