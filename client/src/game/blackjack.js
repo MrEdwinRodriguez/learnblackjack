@@ -66,6 +66,7 @@ const blackjack = function () {
                 } else if (score > 21) {
                     this.currentGameOutcome.push(this.loss);
                 }
+                return this.currentGameOutcome;
             },
             hitSplitHand: function (player, hand) {
                 var card = this.deck.pop();
@@ -121,7 +122,7 @@ const blackjack = function () {
                     dealerHandValue = dealerHandValue + card.weight
                     that.players[this.players.length - 1].hand.push(card);
                 }
-                while (dealerHandValue >= 17 && dealerHandValue < 22) {
+                if (dealerHandValue >= 17 && dealerHandValue < 22) {
                     return this.compareHands(dealerHandValue);
                 }
    
@@ -137,12 +138,16 @@ const blackjack = function () {
             },
             compareHands: function (dealerScore) {
                 const playerHandValue = this.getScore(0);
+                console.log('here')
                 if (dealerScore == playerHandValue ) {
                     this.currentGameOutcome.push(this.push);
+                    return this.push;
                 } else if (dealerScore > playerHandValue) {
                     this.currentGameOutcome.push(this.loss);
+                    return this.loss;
                 } else {
                     this.currentGameOutcome.push(this.win);
+                    return this.win;
                 }
             },
             compareHandsWithSplit: function (dealerScore, playerIndex=0) {
@@ -177,7 +182,6 @@ const blackjack = function () {
                         return actualTotal + weight;  
                     })
                 }
-                console.log(playerHandValue)
                 return playerHandValue;
             },
             getScoreWithSplit: function (aHands) {

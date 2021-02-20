@@ -68,10 +68,11 @@ const Play = ({getCurrentProfile}) => {
     }
 
     const deal = (players = 2) => {
-        if (outcomes.length > 0 ) {
-            setFormData({ ...formData, currentGameOutcome: []});
+        if (outcomes.length > 0 ) { 
+            setFormData({ ...formData, outcomes: []})
             displayOutcome = null;
         }
+        console.log('line 76', outcomes)
         gameObj.startblackjack(players);
         dealerHandObj = gameObj.players.slice(-1)[0];
         setFormData({ ...formData, hand: gameObj.players[0].hand, dealer: dealerHandObj.hand, gamePlayers: gameObj.players });
@@ -79,13 +80,13 @@ const Play = ({getCurrentProfile}) => {
 
     const hitMe = (player = 0) => {
         if (gameObj.players.length == 0) gameObj.players = gamePlayers;
-        gameObj.hit(player);
+        const currentOutcome = gameObj.hit(player);
         const currentScore = gameObj.players[player];
         if (currentScore > 21 )
             gameObj.currentGameOutcome.push(this.loss);
         else if (currentScore == 21)
             gameObj.dealerPlay();
-        setFormData({...formData, hand: gameObj.players[0].hand});
+        setFormData({...formData, hand: gameObj.players[0].hand, outcomes: currentOutcome.length > 0 ? currentOutcome : []});
     };
 
     const stay = (player = 0) => {
@@ -96,8 +97,10 @@ const Play = ({getCurrentProfile}) => {
     };
 
     const double = (player = 0) => {
+        if (gameObj.players.length == 0) gameObj.players = gamePlayers;
         gameObj.hit(player);
         gameObj.dealerPlay();
+        setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hand: gameObj.players[0].hand, dealer: gameObj.players[gameObj.players.length -1].hand });
     }
 
     const split = (player = 0) => {
