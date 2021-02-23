@@ -92,9 +92,10 @@ const Play = ({getCurrentProfile}) => {
 
     const hitMe = (player = 0) => {
         if (gameObj.players.length == 0) gameObj.players = gamePlayers;
+        console.log(gameObj)
         const currentOutcome = gameObj.hit(player);
+        console.log(gameObj)
         const currentScore = gameObj.getScore(player);
-        console.log('line 97', currentScore)
         if (currentScore > 21 ) {
             gameObj.currentGameOutcome.push(gameObj.loss);
             setFormData({...formData, hand: gameObj.players[0].hand, outcomes: currentOutcome.length > 0 ? currentOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true});
@@ -147,10 +148,7 @@ const Play = ({getCurrentProfile}) => {
                                 </ul>
                             </div>
                         </div>
-                        <div> 
-                            {displayOutcome ? displayOutcome : ""}
-                        </div>
-                        <div className='game_outcome'></div>
+                        <div className='game_outcome'> {displayOutcome ? displayOutcome : ""}</div>
                             <h2 className='table-title'>BlackJack</h2>
                             <h5 className='table-pays'>Pays 2 to 3</h5>
                             <h5 className='table-dealer-stands'>Dealer Stand on 17</h5>
