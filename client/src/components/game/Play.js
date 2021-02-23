@@ -2,11 +2,12 @@ import React, {Fragment ,useEffect, useState} from 'react'
 import PropTypes from 'prop-types';
 import {Link, Redirect} from 'react-router-dom';
 import  { connect } from 'react-redux';
+import { setAlert } from "../../actions/alert";
 import { getCurrentProfile } from '../../actions/profile';
 import blackjack  from '../../game/blackjack';
 import { Double } from 'bson';
 
-const Play = ({getCurrentProfile}) => {
+const Play = ({getCurrentProfile, setAlert}) => {
     useEffect(() => {
         getCurrentProfile();
     }, []);
@@ -73,17 +74,13 @@ const Play = ({getCurrentProfile}) => {
     }
 
     const deal = (players = 2) => {
-        if (outcomes.length > 0 ) { 
-            setFormData({ ...formData, outcomes: []})
-            displayOutcome = null;
-        }
         const evaluateInitialHand = gameObj.startblackjack(players);
         dealerHandObj = gameObj.players.slice(-1)[0];
         if (!evaluateInitialHand.hasBlackJack) {
             if (evaluateInitialHand.playerHasDoubles) {
-                setFormData({ ...formData, hand: gameObj.players[0].hand, dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false });
+                setFormData({ ...formData, hand: gameObj.players[0].hand, dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false, outcomes: [] });
             } else {
-                setFormData({ ...formData, hand: gameObj.players[0].hand, dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false });
+                setFormData({ ...formData, hand: gameObj.players[0].hand, dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, outcomes: [] });
             }
         } else {
             setFormData({ ...formData, outcomes: gameObj.currentGameOutcome})
@@ -178,6 +175,7 @@ const Play = ({getCurrentProfile}) => {
 
 Play.propTypes = {
     getCurrentProfile: PropTypes.func.isRequired,
+    setAlert: PropTypes.func.isRequired,
     // blackjack: PropTypes.object.isRequired,
 }
 
@@ -186,4 +184,4 @@ const mapStateToProps = state => ({
     // profile: state.profile
 })
 
-export default connect(mapStateToProps, {getCurrentProfile})(Play)
+export default connect(mapStateToProps, {setAlert, getCurrentProfile})(Play)

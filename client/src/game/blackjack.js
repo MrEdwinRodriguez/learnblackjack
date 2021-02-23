@@ -64,13 +64,14 @@ const blackjack = function () {
                 }
             },
             hit: function (player=0) {
+                if (this.currentGameOutcome.length > 0 ) this.currentGameOutcome = [];
                 var card = this.deck.pop();
                 this.players[player].hand.push(card);
                 var score = this.getScore(player, null);
                 if (score == 21) {
                     this.dealerPlay();
                 } else if (score > 21) {
-                    this.currentGameOutcome.push(this.loss);
+                    this.currentGameOutcome = [this.loss]
                 }
                 return this.currentGameOutcome;
             },
@@ -78,7 +79,9 @@ const blackjack = function () {
                 var card = this.deck.pop();
                 this.players[player].hands[hand].push(card);
                 var score = this.getScore(player, hand);
-                if (score > 21) {
+                if (score > 21 && this.currentGameOutcome.length == 0) {
+                    this.currentGameOutcome = [this.loss];
+                } else if (score > 21) {
                     this.currentGameOutcome.push(this.loss)
                 }
             },
@@ -88,7 +91,7 @@ const blackjack = function () {
                     this.players[playerIndex].hands[handIndex].push(card); 
                     const score = this.getScore(playerIndex, handIndex);
                     if (score > 21) {
-                        this.currentGameOutcome.push(this.loss)
+                        this.currentGameOutcome = [this.loss];
                         return 'Loss';
                     } else {
                         this.dealerPlay();
@@ -97,7 +100,7 @@ const blackjack = function () {
                     this.players[playerIndex].hand.push(card); 
                     const score = this.getScore(playerIndex, null);
                     if (score > 21) {
-                        this.currentGameOutcome.push(this.loss)
+                        this.currentGameOutcome = [this.loss];
                         return 'Loss';
                     } else {
                         this.dealerPlay();
@@ -108,13 +111,13 @@ const blackjack = function () {
                 const playerHand = this.getScore(player);
                 const dealerHand = this.getScore(this.players.length -1);
                  if (playerHand == 21 && dealerHand == 21 ) {
-                     this.currentGameOutcome = this.push;
+                    this.currentGameOutcome = [this.push];
                      return true;
                  } else if (playerHand != 21 && dealerHand == 21 ) {
-                     this.currentGameOutcome = this.dealerblackjack;
+                     this.currentGameOutcome = [this.dealerblackjack];
                      return true;
                  } else if (playerHand == 21 && dealerHand != 21) {
-                     this.currentGameOutcome = this.blackjack;
+                    this.currentGameOutcome = [this.blackjack];
                      return true;
                  } else {
                      return false;
@@ -136,10 +139,10 @@ const blackjack = function () {
                         return a.weight + b.weight;  
                     })
                     if ( dealerHandValue == playerHandValue && player.hand.length == 2 ) {
-                        this.currentGameOutcome = this.push;
+                        this.currentGameOutcome = [this.push];
                         return 'Push';
                     } else {
-                        this.currentGameOutcome = this.loss;
+                        this.currentGameOutcome = [this.loss];
                         return "Loss";
                     }
                 }
@@ -155,7 +158,7 @@ const blackjack = function () {
                 if (dealerHandValue > 21) {
                     const playerHand = this.getScore(0);
                     if (playerHand < 22 ) {
-                        this.currentGameOutcome = this.win;
+                        this.currentGameOutcome = [this.win];
                         return "Win";
                     }
                 } else {
@@ -164,15 +167,14 @@ const blackjack = function () {
             },
             compareHands: function (dealerScore) {
                 const playerHandValue = this.getScore(0);
-                console.log('here')
                 if (dealerScore == playerHandValue ) {
-                    this.currentGameOutcome.push(this.push);
+                    this.currentGameOutcome = [this.push];
                     return this.push;
                 } else if (dealerScore > playerHandValue) {
-                    this.currentGameOutcome.push(this.loss);
+                    this.currentGameOutcome = [this.loss];
                     return this.loss;
                 } else {
-                    this.currentGameOutcome.push(this.win);
+                    this.currentGameOutcome = [this.win];
                     return this.win;
                 }
             },
@@ -183,11 +185,11 @@ const blackjack = function () {
                     const playerHands = this.getScoreWithSplit(player.hands);
                     outcomes = playerHands.map(playerHand => {
                         if (dealerScore == playerHand  ) {
-                            this.currentGameOutcome.push(this.push);
+                            this.currentGameOutcome = [this.push];
                         } else if (dealerScore > playerHand ) {
-                            this.currentGameOutcome.push(this.loss);
+                            this.currentGameOutcome = [this.loss];
                         } else {
-                            this.currentGameOutcome.push(this.win);
+                            this.currentGameOutcome = [this.win];
                         }
                     })
                 }
