@@ -158,6 +158,18 @@ img {
   width: 100%
 }
 
+.outcome {
+  position: relative;
+  top: 80px; 
+  z-index: 1;
+  padding: 0.8rem;
+  margin: auto;
+  width: 70%;
+  height: 60px;
+  opacity: 0.9;
+  background: var(--light-color);
+  color: #333;
+}
 
 .alert {
   position: relative;
@@ -175,6 +187,7 @@ img {
 .btn-primary,
 .bg-primary,
 .badge-primary,
+.outcome-primary,
 .alert-primary {
   background: var(--primary-color);
   color: #fff;
@@ -183,6 +196,7 @@ img {
 .btn-light,
 .bg-light,
 .badge-light,
+.outcome-light,
 .alert-light {
   background: var(--light-color);
   color: #333;
@@ -191,6 +205,7 @@ img {
 .btn-dark,
 .bg-dark,
 .badge-dark,
+.outcome-dark,
 .alert-dark {
   background: var(--dark-color);
   color: #fff;
@@ -199,6 +214,7 @@ img {
 .btn-danger,
 .bg-danger,
 .badge-danger,
+.outcome-danger,
 .alert-danger {
   background: var(--danger-color);
   color: #fff;
@@ -207,6 +223,7 @@ img {
 .btn-success,
 .bg-success,
 .badge-success,
+.outcome-success,
 .alert-success {
   background: var(--success-color);
   color: #fff;
@@ -215,6 +232,7 @@ img {
 .btn-white,
 .bg-white,
 .badge-white,
+.outcome-white,
 .alert-white {
   background: #fff;
   color: #333;
@@ -837,6 +855,19 @@ button {
 .cardList{
   display: table;
   margin: 0 auto;
+}
+
+.card_list_split {
+  display: table;
+  margin: 0 auto;
+}
+
+.card_item_split {
+  position: relative;
+  float: none;
+  display:inline-block !important;
+  vertical-align: top;
+  margin-left: 10px;
 }
 
 .blackjack-buttons {

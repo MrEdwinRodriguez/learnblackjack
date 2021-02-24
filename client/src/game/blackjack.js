@@ -1,7 +1,8 @@
 const blackjack = function () {
     return {
             suits: '♠︎ ♥︎ ♣︎ ♦︎'.split(' '),
-            values: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
+            // values: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
+            values: ['2'],
             push: 'Push',
             win: "Win",
             loss: "Loss",
@@ -241,8 +242,8 @@ const blackjack = function () {
                     [currentHand[1]]
                 ]
                 const firstCard = this.deck.pop();
+                this.players[playerIndex].hand = [];
                 this.players[playerIndex].hands[0].push(firstCard); 
-
             }
 }    
 }

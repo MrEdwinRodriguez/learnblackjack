@@ -4,6 +4,7 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
 import Alert from './components/layout/Alert';
+import Outcome from './components/layout/Outcome';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Dashboard from './components/dashboard/Dashboard';
@@ -37,6 +38,7 @@ const App = () => {
           <Route exact path='/' component={Landing} />
           <section className='container-fluid hold-alert'>
           <Alert />
+          {/* <Outcome /> */}
             <Switch>
               <Route exact path='/register' component={Register} /> */}
               <Route exact path='/login' component={Login} />

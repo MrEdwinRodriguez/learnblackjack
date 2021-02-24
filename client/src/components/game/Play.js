@@ -7,7 +7,7 @@ import { getCurrentProfile } from '../../actions/profile';
 import blackjack  from '../../game/blackjack';
 import { Double } from 'bson';
 
-const Play = ({getCurrentProfile, setAlert}) => {
+const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
     useEffect(() => {
         getCurrentProfile();
     }, []);
@@ -28,7 +28,8 @@ const Play = ({getCurrentProfile, setAlert}) => {
 
     let dealerHandObj = null;
     let dealerHand = null;
-    let playerHands = null;
+    let playerHand = null;
+    let playerHands = [];
     let displayOutcome = null;
     const gameObj = blackjack();
     gameObj.createDeck();
@@ -50,7 +51,7 @@ const Play = ({getCurrentProfile, setAlert}) => {
         })
     }
     if (hand && hand.length > 0) {
-        playerHands = hand.map(card => {
+        playerHand = hand.map(card => {
                 return <li className="cardItem" weight={card.weight} key="1">
                 <div className='card red'>
                     <div className='card-topleft'>
@@ -65,11 +66,32 @@ const Play = ({getCurrentProfile, setAlert}) => {
             </li>
         })
     }
+    if (hands && hands.length > 0) {
+        hands.forEach(hand => {
+            const individualHand = hand.map(card => {
+            return <li className="card_item_split" weight={card.weight} key="1">
+                <div className='card red'>
+                    <div className='card-topleft'>
+                        <div className='card-corner-rank'>{card.value}</div>
+                        <div className='card-corner-suit'>{card.suit}</div>
+                    </div>
+                    <div className='card-bottomright'>
+                        <div className='card-corner-rank'>{card.value}</div>
+                        <div className='card-corner-suit'>{card.suit}</div>
+                    </div>
+                </div>
+            </li>
+        
+            })
+            let unorderedList = <ul>{individualHand}</ul>
+            playerHands.push(unorderedList);
+        })
+    }
+    console.log(playerHands)
     if (outcomes && outcomes.length > 0 && Array.isArray(outcomes)) {
-        let key = 0; 
-        displayOutcome = outcomes.map(outcome => {
-            key++;
-            return <li key={key}><h1>{outcome}</h1></li>
+        outcomes.forEach(outcome => {
+            // setOutcome(outcome, 'danger', 1000);
+            setAlert(outcome, 'danger', 1000);
         })
     }
 
@@ -124,12 +146,11 @@ const Play = ({getCurrentProfile, setAlert}) => {
         var cardValue = gameObj.players[player].hand[0].value;
         if (cardValue == 'A') {
             gameObj.splitAce(player);
-            setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hands: gameObj.players[0].hands, dealer: gameObj.players[gameObj.players.length -1].hand, disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true });
+            setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hands: gameObj.players[player].hands, dealer: gameObj.players[gameObj.players.length -1].hand, disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true });
         } else {
-            gameObj.split(player); 
-            // TO DO : setFormData after split non ace hands
+            gameObj.split(player);
+            setFormData({...formData, hand: [], hands: gameObj.players[player].hands, disableDeal: true, disableSplit: true})
         }
-        setFormData({...formData, hand: [], hands: gameObj.hands})
     }
     // ));
     return (
@@ -152,8 +173,9 @@ const Play = ({getCurrentProfile, setAlert}) => {
                              <div className='hold-player-one'>
                                 <div class='player-position-one'>
                                     <ul className='cardList'>
-                                        {playerHands ? playerHands : <li></li>}
+                                        {playerHand ? playerHand : <li></li>}
                                     </ul>
+                                    {playerHands ? playerHands : <li></li>}
                                 </div>
                             </div>
                         </div>
