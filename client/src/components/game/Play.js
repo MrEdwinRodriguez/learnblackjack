@@ -83,11 +83,10 @@ const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
             </li>
         
             })
-            let unorderedList = <ul>{individualHand}</ul>
+            let unorderedList = <ul className='card_list_split'>{individualHand}</ul>
             playerHands.push(unorderedList);
         })
     }
-    console.log(playerHands)
     if (outcomes && outcomes.length > 0 && Array.isArray(outcomes)) {
         outcomes.forEach(outcome => {
             // setOutcome(outcome, 'danger', 1000);
@@ -146,7 +145,7 @@ const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
         var cardValue = gameObj.players[player].hand[0].value;
         if (cardValue == 'A') {
             gameObj.splitAce(player);
-            setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hands: gameObj.players[player].hands, dealer: gameObj.players[gameObj.players.length -1].hand, disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true });
+            setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hand: [],  hands: gameObj.players[player].hands, dealer: gameObj.players[gameObj.players.length -1].hand, disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true });
         } else {
             gameObj.split(player);
             setFormData({...formData, hand: [], hands: gameObj.players[player].hands, disableDeal: true, disableSplit: true})
@@ -175,7 +174,9 @@ const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
                                     <ul className='cardList'>
                                         {playerHand ? playerHand : <li></li>}
                                     </ul>
-                                    {playerHands ? playerHands : <li></li>}
+                                    <div className='hold_split'>
+                                        {playerHands ? playerHands : <li></li>}
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -858,9 +858,15 @@ button {
 }
 
 .card_list_split {
-  display: table;
-  margin: 0 auto;
+  display: inline;
+  padding: 0 20px;
 }
+
+.hold_split{
+  justify-content: center;
+  display: flex;
+}
+
 
 .card_item_split {
   position: relative;

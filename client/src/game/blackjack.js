@@ -1,8 +1,7 @@
 const blackjack = function () {
     return {
             suits: '♠︎ ♥︎ ♣︎ ♦︎'.split(' '),
-            // values: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
-            values: ['2'],
+            values: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
             push: 'Push',
             win: "Win",
             loss: "Loss",
@@ -166,6 +165,30 @@ const blackjack = function () {
                     return this.compareHands(dealerHandValue);
                 }
             },
+            dealerPlaySplit: function (playerIndex = 0) {
+                let that = this;
+                let dealer = this.players.slice(-1)[0];
+                var dealerHandValue = dealer.hand.reduce(function(a, b){ 
+                    return a.weight + b.weight;  
+                })
+                while (dealerHandValue < 17) {
+                    var card = this.deck.pop();
+                    dealerHandValue = dealerHandValue + card.weight
+                    that.players[this.players.length - 1].hand.push(card);
+                }
+                if (dealerHandValue >= 17 && dealerHandValue < 32) {
+                    for (let i=0; i<this.players[playerIndex].hands.length ; i++ ) {
+                        const playerHandValue = this.getScore(0,i);
+                        if (dealerHandValue == playerHandValue ) {
+                            this.currentGameOutcome.push(that.push);
+                        } else if (dealerHandValue > playerHandValue) {
+                            this.currentGameOutcome.push(that.loss);
+                        } else {
+                            this.currentGameOutcome.push(that.win);
+                        }
+                    }
+                }
+            },
             compareHands: function (dealerScore) {
                 const playerHandValue = this.getScore(0);
                 if (dealerScore == playerHandValue ) {
@@ -198,7 +221,7 @@ const blackjack = function () {
             getScore: function (playerIndex, handIndex) {
                 const player = this.players[playerIndex];
                 let playerHandValue = null;
-                if (handIndex) {
+                if (!isNaN(handIndex)) {
                     playerHandValue = player.hands[handIndex].reduce(function(total, currentValue){ 
                         let actualTotal = total && total.weight ? total.weight : total;
                         let weight = currentValue && currentValue.weight ? currentValue.weight : currentValue;
@@ -232,7 +255,8 @@ const blackjack = function () {
                 this.players[playerIndex].hands[0].push(firstCard);                 
                 const secondCard = this.deck.pop();
                 this.players[playerIndex].hands[1].push(secondCard);
-                this.dealerPlay();
+                this.players[playerIndex].hand = [];
+                this.dealerPlaySplit();
             },
             split: function (playerIndex) {
                 let player = this.players[playerIndex];
