@@ -1,8 +1,8 @@
 const blackjack = function () {
     return {
             suits: '♠︎ ♥︎ ♣︎ ♦︎'.split(' '),
-            // values: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
-            values: ['2'],
+            values: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
+            // values: ['2', '2', '2'],
             push: 'Push',
             win: "Win",
             loss: "Loss",
@@ -220,10 +220,11 @@ const blackjack = function () {
                     })
                 }
             },
-            getScore: function (playerIndex, handIndex) {
+            getScore: function (playerIndex, handIndex=null) {
                 const player = this.players[playerIndex];
                 let playerHandValue = null;
-                if (!isNaN(handIndex)) {
+                console.log('line 226', handIndex, typeof handIndex, isNaN(null))
+                if (handIndex !== null) {
                     playerHandValue = player.hands[handIndex].hand.reduce(function(total, currentValue){ 
                         let actualTotal = total && total.weight ? total.weight : total;
                         let weight = currentValue && currentValue.weight ? currentValue.weight : currentValue;

@@ -24,8 +24,9 @@ const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
         disableSplit: true,
         disableStay: true,
         showHitSplit: false,
+        splitHandNumber: null,
     })
-    let {hand, hands, dealer, gamePlayers, outcomes, disableDeal, disableHit, disableDouble, disableSplit, disableStay, showHitSplit } = formData;
+    let {hand, hands, dealer, gamePlayers, outcomes, disableDeal, disableHit, disableDouble, disableSplit, disableStay, showHitSplit, splitHandNumber } = formData;
 
     let dealerHandObj = null;
     let dealerHand = null;
@@ -135,7 +136,7 @@ const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
         const currentHandOutcome = gameObj.hitSplitHand(player, handIndex);
         if (currentHandOutcome  > 21 ) {
             gameObj.currentGameOutcome.push(gameObj.loss);
-            blackjackPlayer.hands[handIndex].isDone = true;
+            gameObj.players[player].hands[handIndex].isDone = true;
             if (totalHands-1 == handIndex ) {
                 gameObj.dealerPlaySplit();
                 setFormData({...formData, dealer: dealerHandObj.hand, outcomes: currentHandOutcome.length > 0 ?  currentHandOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true}); 
@@ -144,10 +145,10 @@ const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
             }
         } else if (currentHandOutcome  == 21) {
             gameObj.currentGameOutcome.push(gameObj.loss);
-            blackjackPlayer.hands[handIndex].isDone = true;
+            gameObj.players[player].hands[handIndex].isDone = true;
             if (totalHands-1 == handIndex ) {
                 gameObj.dealerPlaySplit();
-                setFormData({...formData, dealer: dealerHandObj.hand, outcomes: currentHandOutcome.length > 0 ?  currentHandOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true}); 
+                setFormData({...formData, dealer: dealerHandObj.hand, hands: gameObj.players[player].hands, outcomes: currentHandOutcome.length > 0 ?  currentHandOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true}); 
             } else {
                 setFormData({...formData, hands: gameObj.players[0].hands, outcomes: currentHandOutcome});
             }
@@ -163,9 +164,20 @@ const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
         setFormData({...formData, dealer: dealerHandObj.hand, outcomes: gameObj.currentGameOutcome,  disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true});
     };
 
-    const stay = (player = 0) => {
-        //stay for split hands, similar to hitSplit
-    },
+    const staySplit = (player = 0) => {
+        if (gameObj.players.length == 0) gameObj.players = gamePlayers;
+        const blackjackPlayer = gameObj.players[player];
+        const totalHands = blackjackPlayer.hands.length;
+        let handIndex = blackjackPlayer.hands.findIndex(singleHand => !singleHand.isDone);
+        gameObj.players[player].hands[handIndex].isDone = true;
+        if (totalHands-1 == handIndex ) {
+            gameObj.dealerPlaySplit();
+            const dealerHandObj = gameObj.players.slice(-1)[0];
+            setFormData({...formData, dealer: dealerHandObj.hand, hands: gameObj.players[player].hands, outcomes: gameObj.currentGameOutcome, disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true}); 
+        } else {
+            setFormData({...formData});
+        }
+    }
 
     const double = (player = 0) => {
         if (gameObj.players.length == 0) gameObj.players = gamePlayers;
@@ -182,7 +194,7 @@ const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
             setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hand: [],  hands: gameObj.players[player].hands, dealer: gameObj.players[gameObj.players.length -1].hand, disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true });
         } else {
             gameObj.split(player);
-            setFormData({...formData, hand: [], hands: gameObj.players[player].hands, disableDeal: true, disableSplit: true,  showHitSplit: true})
+            setFormData({...formData, hand: [], hands: gameObj.players[player].hands, disableDeal: true, disableSplit: true,  showHitSplit: true, splitHandNumber: isNaN(splitHandNumber) ? 0 : splitHandNumber++})
         }
     }
     // ));
@@ -218,10 +230,9 @@ const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
                             <div>
                                 <button type="button" className="btn btn-success" onClick={() => deal()} disabled={disableDeal} >Deal</button>
                                 <button type="button" className="btn btn-success" onClick={() => {!showHitSplit ? hitMe() : hitSplit()}} disabled={disableHit} >Hit</button>
-                                {/* <button type="button" className="btn btn-success" onClick={() => hitMe()} disabled={disableHit} >Hit</button> */}
                                 <button type="button" className="btn btn-success" onClick={() => double()} disabled={disableDouble}>Double</button>
                                 <button type="button" className="btn btn-success" onClick={() => split()} disabled={disableSplit}>Split</button>
-                                <button type="button" className="btn btn-danger" onClick={() => stay()} disabled={disableStay}>Stay</button>
+                                <button type="button" className="btn btn-danger" onClick={() => {!showHitSplit ? stay() : staySplit()}} disabled={disableStay}>Stay</button>
                             </div>
                         </div>
                     </div>
