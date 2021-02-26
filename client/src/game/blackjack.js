@@ -223,7 +223,6 @@ const blackjack = function () {
             getScore: function (playerIndex, handIndex=null) {
                 const player = this.players[playerIndex];
                 let playerHandValue = null;
-                console.log('line 226', handIndex, typeof handIndex, isNaN(null))
                 if (handIndex !== null) {
                     playerHandValue = player.hands[handIndex].hand.reduce(function(total, currentValue){ 
                         let actualTotal = total && total.weight ? total.weight : total;
