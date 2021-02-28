@@ -85,7 +85,8 @@ const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
         })
     }
     if (hands && hands.length > 0) {
-        hands.forEach(singleHand => {
+        const reversedHands = hands.reverse();
+        reversedHands.forEach(singleHand => {
             const individualHand = singleHand.hand.map(card => {
             return <li className="card_item_split" weight={card.weight} key="1">
                 <div className='card red'>
@@ -104,6 +105,7 @@ const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
             let unorderedList = <ul className='card_list_split'>{individualHand}</ul>
             playerHands.push(unorderedList);
         })
+        hands = reversedHands.reverse();
     }
     if (outcomes && outcomes.length > 0 && Array.isArray(outcomes)) {
         outcomes.forEach(outcome => {
