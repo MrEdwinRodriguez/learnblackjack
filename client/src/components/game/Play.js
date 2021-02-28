@@ -38,7 +38,6 @@ const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
     gameObj.createDeck();
     gameObj.shuffle();
     if (dealer && dealer.length > 0) {
-        console.log('line 41', showDealerCards)
         if (!showDealerCards) {
             dealerHand = <li className="cardItem" weight={dealer[0].weight} key="1">
                     <div className='card red'>
@@ -124,12 +123,12 @@ const Play = ({getCurrentProfile, setOutcome, setAlert}) => {
         dealerHandObj = gameObj.players.slice(-1)[0];
         if (!evaluateInitialHand.hasBlackJack) {
             if (evaluateInitialHand.playerHasDoubles) {
-                setFormData({ ...formData, hand: gameObj.players[0].hand, dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false, outcomes: [], showDealerCards: false });
+                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false, outcomes: [], showDealerCards: false, showHitSplit: false });
             } else {
-                setFormData({ ...formData, hand: gameObj.players[0].hand, dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, outcomes: [], showDealerCards: false });
+                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, outcomes: [], showDealerCards: false, showHitSplit: false });
             }
         } else {
-            setFormData({ ...formData, outcomes: gameObj.currentGameOutcome, showDealerCards: true})
+            setFormData({ ...formData, hands: [], outcomes: gameObj.currentGameOutcome, showDealerCards: true, showHitSplit: false})
         } 
     };
 
