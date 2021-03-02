@@ -43,11 +43,10 @@ const blackjack = function () {
                 }
                 this.players = new_players;
             },
-            startblackjack: function (players) {
-                let playerTotal = players || 2;
-                this.createDeck();
-                this.shuffle();
-                this.createPlayers(playerTotal);
+            startblackjack: function (players = 2) {
+                // this.createDeck();
+                // this.shuffle();
+                this.createPlayers(players);
                 this.dealHands();
                 return { 
                     hasBlackJack: this.hasBlackJack(), 
@@ -132,6 +131,7 @@ const blackjack = function () {
                 let that = this;
                 let dealer = this.players.slice(-1)[0];
                 let aces = 0;
+                console.log(this)
                 var dealerHandValue = dealer.hand.reduce(function(total, currentValue) { 
                     if (currentValue.weight) aces++;
                     let actualTotal = total && total.weight ? total.weight : total;
