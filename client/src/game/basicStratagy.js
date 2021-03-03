@@ -3,7 +3,7 @@
 // isSoft, does the player hand include an ace
 // isOriginalHand player hand after initial deal (2 cards)
 // isPair if player has double
-const basicStrategy = (dealerCard, playerTotal, isOriginalHand = true,  isSoft = false, isPair = false) => {
+const getBasicStrategy = (dealerCard, playerTotal, isOriginalHand = true,  isSoft = false, isPair = false) => {
    const stay = 'Stay';
    const hit = 'Hit';
    const double = 'Double';
@@ -110,4 +110,4 @@ const basicStrategy = (dealerCard, playerTotal, isOriginalHand = true,  isSoft =
     }
 
 };
-export default basicStrategy;
+export default getBasicStrateg;
