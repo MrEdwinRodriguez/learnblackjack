@@ -21,11 +21,13 @@
   "homepage": "https://github.com/MrEdwinRodriguez/learnblackjack#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "bootstrap": "^4.6.0",
     "config": "^3.3.3",
     "express": "^4.17.1",
     "express-validator": "^6.9.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.10",
+    "react-bootstrap": "^1.5.1",
     "request": "^2.88.2"
   },
   "devDependencies": {

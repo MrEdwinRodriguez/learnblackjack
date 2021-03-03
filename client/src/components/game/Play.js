@@ -1,4 +1,4 @@
-import React, {Fragment ,useEffect, useState} from 'react'
+import React, {Fragment ,useEffect, useState, useRef} from 'react'
 import PropTypes from 'prop-types';
 import {Link, Redirect} from 'react-router-dom';
 import  { connect } from 'react-redux';
@@ -6,6 +6,8 @@ import { setAlert } from "../../actions/alert";
 import { getCurrentProfile } from '../../actions/profile';
 import blackjack  from '../../game/blackjack';
 import { Double } from 'bson';
+import Tooltip from 'react-bootstrap/Tooltip';
+import Overlay from 'react-bootstrap/Overlay';
 
 const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
     useEffect(() => {
@@ -29,8 +31,9 @@ const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
         splitHandNumber: null,
         showDealerCards: false,
         shuffleDeck: false,
+        bidWarning: false,
     })
-    let {money, hand, hands, dealer, gamePlayers, outcomes, disableDeal, disableHit, disableDouble, disableSplit, disableStay, showHitSplit, splitHandNumber, showDealerCards, betAmount, shuffleDeck } = formData;
+    let {money, hand, hands, dealer, gamePlayers, outcomes, disableDeal, disableHit, disableDouble, disableSplit, disableStay, showHitSplit, splitHandNumber, showDealerCards, betAmount, bidWarning, shuffleDeck } = formData;
 
     let dealerHandObj = null;
     let dealerHand = null;
@@ -124,22 +127,27 @@ const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
     }
 
     const setBet = e => setFormData({ ...formData, betAmount: e.target.value}); 
+    const target = useRef(null);
 
     const deal = (players = 2) => {
+        if (betAmount < 10) {
+            setFormData({ ...formData, bidWarning: true})
+            return false;
+        }
         const evaluateInitialHand = gameObj.startblackjack(players);
         dealerHandObj = gameObj.players.slice(-1)[0];
         if (!evaluateInitialHand.hasBlackJack) {
             if (evaluateInitialHand.playerHasDoubles) {
-                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: true, money: money - betAmount});
+                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: true, money: money - betAmount, bidWarning: false});
             } else {
-                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: true, money: money - betAmount});
+                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: true, money: money - betAmount, bidWarning: false});
             }
         } else {
             let newTotal = money;
             if (gameObj.currentGameOutcome[0] == 'Push') newTotal = newTotal + betAmount;
             else if (gameObj.currentGameOutcome[0] == 'Win') newTotal = newTotal + betAmount + (betAmount*1.5);
             else newTotal = newTotal - betAmount
-            setFormData({ ...formData, hands: [], outcomes: gameObj.currentGameOutcome, showDealerCards: true, showHitSplit: false, money: newTotal })
+            setFormData({ ...formData, hands: [], outcomes: gameObj.currentGameOutcome, showDealerCards: true, showHitSplit: false, money: newTotal, bidWarning: false })
         } 
     };
 
@@ -274,7 +282,14 @@ const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
                         </div>
                         <div className='blackjack-buttons'>
                             <div>
-                                <button type="button" className="btn btn-success" onClick={() => deal()} disabled={disableDeal} >Deal</button>
+                                <button type="button" ref={target} className="btn btn-success" onClick={() => deal()} disabled={disableDeal} >Deal</button>
+                                <Overlay target={target.current} show={bidWarning} placement="top">
+                                    {(props) => (
+                                    <Tooltip className="overlay-bid" {...props}>
+                                        Minimum bet of $10
+                                    </Tooltip>
+                                    )}
+                                </Overlay>
                                 <button type="button" className="btn btn-success" onClick={() => {!showHitSplit ? hitMe() : hitSplit()}} disabled={disableHit} >Hit</button>
                                 <button type="button" className="btn btn-success" onClick={() => double()} disabled={disableDouble}>Double</button>
                                 <button type="button" className="btn btn-success" onClick={() => split()} disabled={disableSplit}>Split</button>
