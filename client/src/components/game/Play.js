@@ -114,6 +114,7 @@ const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
         hands = reversedHands.reverse();
     }
     if (outcomes && outcomes.length > 0 && Array.isArray(outcomes)) {
+        console.log('line 117', outcomes)
         outcomes.forEach(outcome => {
             if (outcome == 'Loss') {
                 setAlert(outcome, 'danger', 1000);
@@ -140,7 +141,7 @@ const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
             if (evaluateInitialHand.playerHasDoubles) {
                 setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: true, money: money - betAmount, bidWarning: false});
             } else {
-                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: true, money: money - betAmount, bidWarning: false});
+                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: false, money: money - betAmount, bidWarning: false});
             }
         } else {
             let newTotal = money;
@@ -155,16 +156,18 @@ const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
         if (gameObj.players.length == 0) gameObj.players = gamePlayers;
         const currentOutcome = gameObj.hit(player);
         const currentScore = gameObj.getScore(player);
+        console.log('line 159', currentScore, gameObj)
         if (currentScore > 21 ) {
             gameObj.currentGameOutcome.push(gameObj.loss);
+            console.log('line 160', currentScore, gameObj)
             setFormData({...formData, hand: gameObj.players[0].hand, outcomes: currentOutcome.length > 0 ? currentOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true});
         }
         else if (currentScore == 21) {
             gameObj.dealerPlay();
             let newTotal = money;
             if(gameObj.currentGameOutcome.length > 0) {
-                if (gameObj.currentGameOutcome[0] == 'Push') newTotal = money + betAmount;
-                else if (gameObj.currentGameOutcome[0] == 'Win') newTotal = money + betAmount*2;
+                if (gameObj.currentGameOutcome[0] == 'Push') newTotal = parseInt(money) + parseInt(betAmount);
+                else if (gameObj.currentGameOutcome[0] == 'Win') newTotal = parseInt(money) + parseInt(parseInt(betAmount)*2);
             }
             setFormData({...formData, hand: gameObj.players[0].hand, outcomes: currentOutcome.length > 0 ? currentOutcome : [], disableDeal: false, disableHit: false,  disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true, money: newTotal});
         } else {
@@ -207,8 +210,8 @@ const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
         dealerHandObj = gameObj.players.slice(-1)[0];
         let newTotal = money;
         if(gameObj.currentGameOutcome.length > 0) {
-            if (gameObj.currentGameOutcome[0] == 'Push') newTotal = newTotal + betAmount;
-            else if (gameObj.currentGameOutcome[0] == 'Win') newTotal = newTotal + (betAmount*2);
+            if (gameObj.currentGameOutcome[0] == 'Push') newTotal = parseInt(newTotal) + parseInt(betAmount);
+            else if (gameObj.currentGameOutcome[0] == 'Win') newTotal = parseInt(newTotal) + parseInt(parseInt(betAmount)*2);
         }
         setFormData({...formData, dealer: dealerHandObj.hand, outcomes: gameObj.currentGameOutcome,  disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true, money: newTotal});
     };
@@ -232,7 +235,13 @@ const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
         if (gameObj.players.length == 0) gameObj.players = gamePlayers;
         gameObj.hit(player);
         gameObj.dealerPlay();
-        setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hand: gameObj.players[0].hand, dealer: gameObj.players[gameObj.players.length -1].hand, disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true });
+        let newTotal = money;
+        if(gameObj.currentGameOutcome.length > 0) {
+            if (gameObj.currentGameOutcome[0] == 'Push') newTotal = parseInt(newTotal) + parseInt(betAmount);
+            else if (gameObj.currentGameOutcome[0] == 'Win') newTotal = parseInt(newTotal) + parseInt(parseInt(betAmount)*3);
+            else newTotal = parseInt(newTotal) - parseInt(betAmount);
+        }
+        setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hand: gameObj.players[0].hand, dealer: gameObj.players[gameObj.players.length -1].hand, disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true, money: newTotal });
     }
 
     const split = (player = 0) => {

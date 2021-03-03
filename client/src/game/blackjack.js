@@ -133,7 +133,7 @@ const blackjack = function () {
                 let aces = 0;
                 console.log(this)
                 var dealerHandValue = dealer.hand.reduce(function(total, currentValue) { 
-                    if (currentValue.weight) aces++;
+                    if (currentValue.weight == 11) aces++;
                     let actualTotal = total && total.weight ? total.weight : total;
                     let weight = currentValue && currentValue.weight ? currentValue.weight : currentValue;
                     return actualTotal + weight;  
@@ -186,7 +186,7 @@ const blackjack = function () {
                 let dealer = this.players.slice(-1)[0];
                 let aces = 0;
                 var dealerHandValue =dealer.hand.reduce(function(total, currentValue) { 
-                    if (currentValue.weight) aces++;
+                    if (currentValue.weight == 11) aces++;
                     let actualTotal = total && total.weight ? total.weight : total;
                     let weight = currentValue && currentValue.weight ? currentValue.weight : currentValue;
                     return actualTotal + weight;  
@@ -256,7 +256,7 @@ const blackjack = function () {
                 if (handIndex !== null) {
                     let aces = 0;
                     playerHandValue = player.hands[handIndex].hand.reduce(function(total, currentValue){ 
-                        if (currentValue.weight) aces++;
+                        if (currentValue.weight == 11) aces++;
                         let actualTotal = total && total.weight ? total.weight : total;
                         let weight = currentValue && currentValue.weight ? currentValue.weight : currentValue;
                         return actualTotal + weight;  
@@ -270,7 +270,7 @@ const blackjack = function () {
                 } else {
                     let aces = 0;
                     playerHandValue = player.hand.reduce(function(total, currentValue){
-                        if (currentValue.weight) aces++;
+                        if (currentValue.weight  == 11) aces++;
                         let actualTotal = total && total.weight ? total.weight : total;
                         let weight = currentValue && currentValue.weight ? currentValue.weight : currentValue;
                         return actualTotal + weight;  
