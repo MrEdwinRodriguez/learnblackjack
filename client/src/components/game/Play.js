@@ -44,6 +44,7 @@ const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
     gameObj.createDeck();
     gameObj.shuffle();
     if (dealer && dealer.length > 0) {
+        console.log(showDealerCards)
         if (!showDealerCards) {
             dealerHand = <li className="cardItem" weight={dealer[0].weight} key="1">
                     <div className='card red'>
@@ -114,7 +115,6 @@ const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
         hands = reversedHands.reverse();
     }
     if (outcomes && outcomes.length > 0 && Array.isArray(outcomes)) {
-        console.log('line 117', outcomes)
         outcomes.forEach(outcome => {
             if (outcome == 'Loss') {
                 setAlert(outcome, 'danger', 1000);
@@ -145,10 +145,10 @@ const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
             }
         } else {
             let newTotal = money;
-            if (gameObj.currentGameOutcome[0] == 'Push') newTotal = newTotal + betAmount;
-            else if (gameObj.currentGameOutcome[0] == 'Win') newTotal = newTotal + betAmount + (betAmount*1.5);
-            else newTotal = newTotal - betAmount
-            setFormData({ ...formData, hands: [], outcomes: gameObj.currentGameOutcome, showDealerCards: true, showHitSplit: false, money: newTotal, bidWarning: false })
+            if (gameObj.currentGameOutcome[0] == 'Push') newTotal = parseInt(newTotal) + parseInt(betAmount);
+            else if (gameObj.currentGameOutcome[0] == 'Win') newTotal = parseInt(newTotal) + parseInt(betAmount) + (parseInt(betAmount)*1.5);
+            else newTotal = parseInt(newTotal) - parseInt(betAmount);
+            setFormData({ ...formData, hands: [], dealer: dealerHandObj.hand, hand: gameObj.players[0].hand,  outcomes: gameObj.currentGameOutcome, showHitSplit: false, money: newTotal, bidWarning: false, showDealerCards: true })
         } 
     };
 
