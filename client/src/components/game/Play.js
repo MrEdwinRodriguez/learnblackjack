@@ -261,15 +261,31 @@ const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
 
     const split = (player = 0) => {
         if (gameObj.players.length == 0) gameObj.players = gamePlayers;
-        var cardValue = gameObj.players[player].hand[0].value;
+        var cardValue;
+        const blackjackPlayer = gameObj.players[player];
+        if (gameObj.players[player].hand.length > 0) {
+            cardValue = gameObj.players[player].hand[0].value;
+        } else {
+            const handIndexCheck = blackjackPlayer.hands.findIndex(singleHand => !singleHand.isDone);
+            cardValue = gameObj.players[player].hands[handIndexCheck].hand.value;
+        }
         if (cardValue == 'A') {
             gameObj.splitAce(player);
             setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hand: [],  hands: gameObj.players[player].hands, dealer: gameObj.players[gameObj.players.length -1].hand, disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true });
         } else {
-            gameObj.split(player);
-            setFormData({...formData, hand: [], hands: gameObj.players[player].hands, disableDeal: true, disableSplit: true,  showHitSplit: true, splitHandNumber: isNaN(splitHandNumber) ? 0 : splitHandNumber++})
+            dealerHandObj = gameObj.players.slice(-1)[0];
+            const handIndex = blackjackPlayer.hands.findIndex(singleHand => !singleHand.isDone);
+            const handHasDouble = gameObj.playerHasDoubles(player, handIndex >= 0 ? handIndex : null)
+            if (blackjackPlayer.hands && blackjackPlayer.hands.length > 0) {
+                gameObj.splitSplit(player, handIndex)  
+            } else {
+                gameObj.split(player)
+            }
+           ;
+            setFormData({...formData, hand: [], hands: gameObj.players[player].hands, disableDeal: true, disableSplit: handHasDouble ? false : true,  showHitSplit: true, splitHandNumber: isNaN(splitHandNumber) ? 0 : splitHandNumber++})
         }
     }
+
     // ));
     return (
         <Fragment>

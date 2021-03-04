@@ -124,9 +124,14 @@ const blackjack = function () {
                      return false;
                  }
             },
-            playerHasDoubles: function (player=0) {
-                if (this.players[player].hand[0].weight == this.players[player].hand[1].weight) return true;
-                else return false
+            playerHasDoubles: function (player=0, index=null) {
+                if (!index && index != 0) { //initial hand
+                    if (this.players[player].hand[0].weight == this.players[player].hand[1].weight) return true;
+                    else return false
+                } else { //split hand
+                    if (this.players[player].hands[index].hand[0].weight == this.players[player].hands[index].hand[1].weight) return true;
+                    else return false
+                }
             },
             dealerPlay: function () {
                 let that = this;
@@ -329,6 +334,17 @@ const blackjack = function () {
                 const firstCard = this.deck.pop();
                 this.players[playerIndex].hand = [];
                 this.players[playerIndex].hands[0].hand.push(firstCard); 
+            },
+            splitSplit: function (playerIndex=0, handIndex) {
+                let player = this.players[playerIndex];
+                let currentHand = player.hands[handIndex];
+                player.hands.push({
+                    isDone: false,
+                    hand: [currentHand.hand[1]]
+                });
+                this.players[playerIndex].hands[handIndex].hand.pop();
+                const newCard = this.deck.pop();
+                this.players[playerIndex].hands[handIndex].hand.push(newCard);
             }
 }    
 }
