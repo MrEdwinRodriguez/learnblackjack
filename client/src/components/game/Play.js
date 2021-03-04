@@ -225,7 +225,8 @@ const Play = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
             setFormData({...formData, dealer: dealerHandObj.hand, hands: gameObj.players[player].hands, outcomes: gameObj.currentGameOutcome, disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true}); 
         } else {
             gameObj.hitSplitHand(player, handIndex+1);
-            setFormData({...formData, hands: gameObj.players[player].hands});
+            const handHasDouble = gameObj.playerHasDoubles(player, handIndex >= 0 ? handIndex : null)
+            setFormData({...formData, hands: gameObj.players[player].hands, showHitSplit: handHasDouble});
         }
     }
 
