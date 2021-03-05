@@ -1,8 +1,7 @@
 const blackjack = function () {
     return {
             suits: '♠︎ ♥︎ ♣︎ ♦︎'.split(' '),
-            // values: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
-            values: ['2', '2', "2"],
+            values: ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"],
             push: 'Push',
             win: "Win",
             loss: "Loss",
