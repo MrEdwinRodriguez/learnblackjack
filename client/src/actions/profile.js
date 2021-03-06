@@ -29,9 +29,9 @@ export const updateMoney = (newTotal) => async dispatch => {
         }
     }
     try {
-        console.log('line 32', newTotal.money)
         const body = JSON.stringify({money: newTotal.money})
         const res = await axios.post('/api/profile/money', body, config);
+        return res.data.money
         dispatch({
             type: GET_PROFILE,
             payload: res.data
@@ -39,8 +39,8 @@ export const updateMoney = (newTotal) => async dispatch => {
     } catch (error) {
         dispatch({
             type: PROFILE_ERROR,
-            payload: { msg: error.response.statusText, 
-                status: error.response.status
+            payload: { msg: error.message, 
+                status: error.status
             }
         }) 
     }
