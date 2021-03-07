@@ -16,7 +16,7 @@ const Learn = ({getCurrentProfile, auth, profile}) => {
                     <div className='container'>
                     <div className="signup-form">
                         <div>
-                        <h2 className='text-primary-dashboard'>Learn to Play and Count</h2>
+                        <h2 className='text-primary-dashboard'>Learn BlackJack</h2>
                         </div>
                     </div>
                     </div>

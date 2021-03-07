@@ -20,8 +20,8 @@ const Dashboard = ({getCurrentProfile, auth, profile}) => {
                             <div class="btn-group-vertical">
                                 <Link to='play-black-jack' class="btn btn-primary">Play Black Jack</Link>
                                 <Link to='learn-black-jack' class="btn btn-primary">Learn Black Jack</Link>
-                                <Link to='play-black-jack-counting' class="btn btn-primary">Play With Couting</Link>
-                                <Link to='learn-to-play-black-jack-counting' class="btn btn-primary">Learn to</Link>
+                                <Link to='rules' class="btn btn-primary">Rules</Link>
+                                {/* <Link to='learn-to-play-black-jack-counting' class="btn btn-primary">Learn to</Link> */}
                             </div>
                         </div>
                     </div>

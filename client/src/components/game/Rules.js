@@ -4,11 +4,20 @@ import PropTypes from 'prop-types';
 import {Link, Redirect} from 'react-router-dom';
 import  { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profile';
+import rules  from '../../game/rules';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 const Counting = ({getCurrentProfile, auth, profile}) => {
     useEffect(() => {
         getCurrentProfile();
     }, []);
+
+    const blackjackRules = rules();
+    console.log(blackjackRules)
+
+    const listRules = blackjackRules.map((blackjackRule, index) => {
+        return <ListGroup.Item>{index+1}. {blackjackRule}</ListGroup.Item>
+    })
 
     return (
         <Fragment>
@@ -16,9 +25,12 @@ const Counting = ({getCurrentProfile, auth, profile}) => {
                 <div className="dark-overlay">
                     <div className='container'>
                     <div className="signup-form">
-                        <div>
-                        <h2 className='text-primary-dashboard'>Play and Count Black Jack</h2>
-                        </div>
+                        
+                        <h2 className='text-primary-dashboard'>Rules</h2>
+                        <ListGroup className='rules'>
+                            {listRules}
+                        </ListGroup>
+
                     </div>
                     </div>
                 </div>
