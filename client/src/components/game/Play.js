@@ -8,6 +8,9 @@ import blackjack  from '../../game/blackjack';
 import { Double } from 'bson';
 import Tooltip from 'react-bootstrap/Tooltip';
 import Overlay from 'react-bootstrap/Overlay';
+import PlayerCards from './display/PlayerCards';
+import DealerCards from './display/DealerCards';
+import PlayerSplitCards from './display/PlayerSplitCards';
 
 const Play = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, profile}) => {
     useEffect(() => {
@@ -49,69 +52,16 @@ const Play = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, profi
     gameObj.createDeck();
     gameObj.shuffle();
     if (dealer && dealer.length > 0) {
-        if (!showDealerCards) {
-            dealerHand = <li className="cardItem" weight={dealer[0].weight} key="1">
-                    <div className='card red'>
-                        <div className='card-topleft'>
-                            <div className='card-corner-rank'>{dealer[0].value}</div>
-                            <div className='card-corner-suit'>{dealer[0].suit}</div>
-                        </div>
-                        <div className='card-bottomright'>
-                            <div className='card-corner-rank'>{dealer[0].value}</div>
-                            <div className='card-corner-suit'>{dealer[0].suit}</div>
-                        </div>
-                    </div>
-                </li>
-        } else {
-            dealerHand = dealer.map(card => {
-                return <li className="cardItem" weight={card.weight} key="1">
-                    <div className='card red'>
-                        <div className='card-topleft'>
-                            <div className='card-corner-rank'>{card.value}</div>
-                            <div className='card-corner-suit'>{card.suit}</div>
-                        </div>
-                        <div className='card-bottomright'>
-                            <div className='card-corner-rank'>{card.value}</div>
-                            <div className='card-corner-suit'>{card.suit}</div>
-                        </div>
-                    </div>
-                </li>
-            })
-        }
+        dealerHand = <DealerCards dealer={dealer} showDealerCards={showDealerCards}/>
     }
     if (hand && hand.length > 0) {
-        playerHand = hand.map(card => {
-                return <li className="cardItem" weight={card.weight} key="1">
-                <div className='card red'>
-                    <div className='card-topleft'>
-                        <div className='card-corner-rank'>{card.value}</div>
-                        <div className='card-corner-suit'>{card.suit}</div>
-                    </div>
-                    <div className='card-bottomright'>
-                        <div className='card-corner-rank'>{card.value}</div>
-                        <div className='card-corner-suit'>{card.suit}</div>
-                    </div>
-                </div>
-            </li>
-        })
+        playerHand = <PlayerCards hand={hand}/>
     }
     if (hands && hands.length > 0) {
         const reversedHands = hands.reverse();
         reversedHands.forEach(singleHand => {
             const individualHand = singleHand.hand.map(card => {
-            return <li className="card_item_split" weight={card.weight} key="1">
-                <div className='card red'>
-                    <div className='card-topleft'>
-                        <div className='card-corner-rank'>{card.value}</div>
-                        <div className='card-corner-suit'>{card.suit}</div>
-                    </div>
-                    <div className='card-bottomright'>
-                        <div className='card-corner-rank'>{card.value}</div>
-                        <div className='card-corner-suit'>{card.suit}</div>
-                    </div>
-                </div>
-            </li>
-        
+                return <PlayerSplitCards card={card} />
             })
             let unorderedList = <ul className='card_list_split'>{individualHand}</ul>
             playerHands.push(unorderedList);
