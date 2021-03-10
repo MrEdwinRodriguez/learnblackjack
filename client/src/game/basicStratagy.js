@@ -11,7 +11,7 @@ const getBasicStrategy = (dealerCard, playerTotal, isOriginalHand = true,  isSof
    console.log("Dealer Cart: ", dealerCard, "player total: ", playerTotal, "isOriginalHand", isOriginalHand,  "isSoft", isSoft,  "isPair", isPair)
     if (!isSoft && !isPair) {
         console.log('is hard and not a pair')
-        if (playerTotal < 8) {
+        if (playerTotal <= 8) {
             return hit
         } else if (playerTotal == 9) {
             if ([3,4,5,6].includes(dealerCard) && isOriginalHand)

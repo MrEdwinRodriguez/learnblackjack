@@ -86,7 +86,13 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
 
     const setBet = e => setFormData({ ...formData, betAmount: e.target.value}); 
     const target = useRef(null);
-    // (dealerCard, playerTotal, isOriginalHand = true,  isSoft = false, isPair = false)
+
+    const bookSays = (isOriginalHand = false, isPair = false) => {
+        const recommendation = basicStrategy(gameObj.getDealerFirstCard(),gameObj.getScore(), isOriginalHand, gameObj.playerHasAce(hands.length > 0 ? true :false), isPair );
+        console.log(recommendation)
+        // update stay here
+    }
+
     const deal = (players = 2) => {
         if (betAmount < 10) {
             setFormData({ ...formData, bidWarning: true})
@@ -96,12 +102,10 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
         dealerHandObj = gameObj.players.slice(-1)[0];
         if (!evaluateInitialHand.hasBlackJack) {
             if (evaluateInitialHand.playerHasDoubles) {
-                const bookSays = basicStrategy(gameObj.getDealerFirstCard(),gameObj.getScore(), true,gameObj.playerHasAce(),true )
-                console.log(bookSays)
+                bookSays(true, true);
                 setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: true, money: money - betAmount, bidWarning: false});
             } else {
-                const bookSays = basicStrategy(gameObj.getDealerFirstCard(),gameObj.getScore(), true, gameObj.playerHasAce(),false )
-                console.log(bookSays)
+                bookSays(true, false);
                 setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: false, money: money - betAmount, bidWarning: false});
             }
         } else {
@@ -131,6 +135,7 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
             updateMoney({money: newTotal});
             setFormData({...formData, hand: gameObj.players[0].hand, outcomes: currentOutcome.length > 0 ? currentOutcome : [], disableDeal: false, disableHit: false,  disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true, money: newTotal});
         } else {
+            bookSays();
             setFormData({...formData, hand: gameObj.players[0].hand, outcomes: currentOutcome.length > 0 ? currentOutcome : [], disableDouble: true, disableSplit: true});
         }
     };
@@ -149,6 +154,7 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
                 setFormData({...formData, dealer: dealerHandObj.hand, outcomes: currentHandOutcome.length > 0 ?  currentHandOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true}); 
                 updateMoney({money: money});
             } else {
+                bookSays(true, gameObj.playerHasDoubles(player, handIndex));
                 setFormData({...formData, outcomes: currentHandOutcome});
             }
         } else if (currentHandOutcome  == 21) {
@@ -159,9 +165,11 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
                 setFormData({...formData, dealer: dealerHandObj.hand, hands: gameObj.players[player].hands, outcomes: currentHandOutcome.length > 0 ?  currentHandOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true}); 
                 updateMoney({money: money});
             } else {
+                bookSays(true, gameObj.playerHasDoubles(player, handIndex));
                 setFormData({...formData, hands: gameObj.players[0].hands, outcomes: currentHandOutcome});
             }
         } else {
+            bookSays();
             setFormData({...formData, hands: gameObj.players[0].hands, outcomes: currentHandOutcome, disableDouble: true, disableSplit: true});
         }
     }
@@ -193,6 +201,7 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
         } else {
             gameObj.hitSplitHand(player, handIndex+1);
             const handHasDouble = gameObj.playerHasDoubles(player, handIndex >= 0 ? handIndex : null)
+            bookSays(true, handHasDouble);
             setFormData({...formData, hands: gameObj.players[player].hands, showHitSplit: handHasDouble});
         }
     }
@@ -208,6 +217,7 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
             else newTotal = parseInt(newTotal) - parseInt(betAmount);
         }
         updateMoney({money: newTotal});
+        bookSays();
         setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hand: gameObj.players[0].hand, dealer: gameObj.players[gameObj.players.length -1].hand, disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true, money: newTotal });
     }
 
@@ -225,6 +235,7 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
             setFormData({...formData, dealer: dealerHandObj.hand, hands: gameObj.players[player].hands, outcomes: currentHandOutcome.length > 0 ?  currentHandOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true}); 
         } else {
             gameObj.hitSplitHand(player, handIndex+1);
+            bookSays(true, gameObj.playerHasDoubles(player, handIndex));
             setFormData({...formData, hands: gameObj.players[0].hands, outcomes: currentHandOutcome});
         }
     }
@@ -251,8 +262,8 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
                 gameObj.splitSplit(player, handIndex)  
             } else {
                 gameObj.split(player)
-            }
-           ;
+            };
+           bookSays(true, gameObj.playerHasDoubles(player, handIndex));
             setFormData({...formData, hand: [], hands: gameObj.players[player].hands, disableDeal: true, disableSplit: handHasDouble ? false : true,  showHitSplit: true, splitHandNumber: isNaN(splitHandNumber) ? 0 : splitHandNumber++})
         }
     }

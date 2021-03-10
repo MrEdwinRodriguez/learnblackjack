@@ -348,10 +348,17 @@ const blackjack = function () {
             getDealerFirstCard: function () {
                 return this.players[this.players.length -1].hand[0].weight;
             },
-            playerHasAce: function (player = 0) {
-                return this.players[player].hand.some(card => {
-                    return card.value == "A";
-                })
+            playerHasAce: function (player = 0, isSplit = false) {
+                if (isSplit) {
+                    let handIndex = this.players[player].hands.findIndex(singleHand => !singleHand.isDone);
+                    return this.players[player].hands[handIndex].some(card => {
+                        return card.value == "A";
+                    })
+                } else {
+                    return this.players[player].hand.some(card => {
+                        return card.value == "A";
+                    })
+                };
             }
 }    
 }
