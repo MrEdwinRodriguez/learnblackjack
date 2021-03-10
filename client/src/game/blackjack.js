@@ -344,6 +344,14 @@ const blackjack = function () {
                 this.players[playerIndex].hands[handIndex].hand.pop();
                 const newCard = this.deck.pop();
                 this.players[playerIndex].hands[handIndex].hand.push(newCard);
+            },
+            getDealerFirstCard: function () {
+                return this.players[this.players.length -1].hand[0].weight;
+            },
+            playerHasAce: function (player = 0) {
+                return this.players[player].hand.some(card => {
+                    return card.value == "A";
+                })
             }
 }    
 }

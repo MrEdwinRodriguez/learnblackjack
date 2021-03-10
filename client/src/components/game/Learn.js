@@ -96,9 +96,12 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
         dealerHandObj = gameObj.players.slice(-1)[0];
         if (!evaluateInitialHand.hasBlackJack) {
             if (evaluateInitialHand.playerHasDoubles) {
-               
+                const bookSays = basicStrategy(gameObj.getDealerFirstCard(),gameObj.getScore(), true,gameObj.playerHasAce(),true )
+                console.log(bookSays)
                 setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: true, money: money - betAmount, bidWarning: false});
             } else {
+                const bookSays = basicStrategy(gameObj.getDealerFirstCard(),gameObj.getScore(), true, gameObj.playerHasAce(),false )
+                console.log(bookSays)
                 setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: false, money: money - betAmount, bidWarning: false});
             }
         } else {

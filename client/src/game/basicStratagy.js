@@ -8,6 +8,7 @@ const getBasicStrategy = (dealerCard, playerTotal, isOriginalHand = true,  isSof
    const hit = 'Hit';
    const double = 'Double';
    const split = 'Split'
+   console.log("Dealer Cart: ", dealerCard, "player total: ", playerTotal, "isOriginalHand", isOriginalHand,  "isSoft", isSoft,  "isPair", isPair)
     if (!isSoft && !isPair) {
         console.log('is hard and not a pair')
         if (playerTotal < 8) {
@@ -110,4 +111,4 @@ const getBasicStrategy = (dealerCard, playerTotal, isOriginalHand = true,  isSof
     }
 
 };
-export default getBasicStrateg;
+export default getBasicStrategy;
