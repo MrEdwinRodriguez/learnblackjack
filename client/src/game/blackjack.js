@@ -355,7 +355,7 @@ const blackjack = function () {
                         return card.value == "A";
                     })
                 } else {
-                    return this.players[player].hand.some(card => {
+                    return this.players[0].hand.some(card => {
                         return card.value == "A";
                     })
                 };

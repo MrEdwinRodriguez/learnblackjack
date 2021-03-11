@@ -911,3 +911,11 @@ button:disabled {
   background-color: #000;
   padding: 15px;
 }
+
+.recommendation {
+  text-align: center;
+}
+
+.recommend-text {
+  color: red;
+}
