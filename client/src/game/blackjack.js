@@ -128,6 +128,7 @@ const blackjack = function () {
                     if (this.players[player].hand[0].weight == this.players[player].hand[1].weight) return true;
                     else return false
                 } else { //split hand
+                    console.log('line 132', player, index)
                     if (this.players[player].hands[index].hand[0].weight == this.players[player].hands[index].hand[1].weight) return true;
                     else return false
                 }
