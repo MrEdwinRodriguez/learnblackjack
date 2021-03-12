@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Link, Redirect} from 'react-router-dom';
 import  { connect } from 'react-redux';
 import { setAlert } from "../../actions/alert";
-import { getCurrentProfile, updateMoney } from '../../actions/profile';
+import { getCurrentProfile} from '../../actions/profile';
 import blackjack  from '../../game/blackjack';
 import basicStrategy  from '../../game/basicStratagy';
 import { Double } from 'bson';
@@ -13,13 +13,13 @@ import PlayerCards from './display/PlayerCards';
 import DealerCards from './display/DealerCards';
 import PlayerSplitCards from './display/PlayerSplitCards';
 
-const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, profile}) => {
+const Learn = ({getCurrentProfile, setOutcome, setAlert, auth, profile}) => {
     useEffect(() => {
         getCurrentProfile();
     }, []);
 
     const [formData, setFormData] = useState({
-        money: profile ? profile.money : 0,
+        money: 1000,
         betAmount: 0,
         hand: [],
         hands: [],
@@ -45,7 +45,7 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
 
 
     if (profile && !profileLoaded) {
-        setFormData({...formData, money: profile.money, profileLoaded: true});
+        setFormData({...formData, profileLoaded: true});
     }
     let dealerHandObj = null;
     let dealerHand = null;
@@ -124,7 +124,6 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
         const currentOutcome = gameObj.hit(player);
         const currentScore = gameObj.getScore(player);
         if (currentScore > 21 ) {
-            updateMoney({money: money});
             setFormData({...formData, hand: gameObj.players[0].hand, outcomes: currentOutcome.length > 0 ? currentOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true});
         }
         else if (currentScore == 21) {
@@ -134,7 +133,6 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
                 if (gameObj.currentGameOutcome[0] == 'Push') newTotal = parseInt(money) + parseInt(betAmount);
                 else if (gameObj.currentGameOutcome[0] == 'Win') newTotal = parseInt(money) + parseInt(parseInt(betAmount)*2);
             }
-            updateMoney({money: newTotal});
             setFormData({...formData, hand: gameObj.players[0].hand, outcomes: currentOutcome.length > 0 ? currentOutcome : [], disableDeal: false, disableHit: false,  disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true, money: newTotal});
         } else {
             const recommend = bookSays();
@@ -154,7 +152,6 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
             if (totalHands-1 == handIndex ) {
                 gameObj.dealerPlaySplit();
                 setFormData({...formData, dealer: dealerHandObj.hand, outcomes: currentHandOutcome.length > 0 ?  currentHandOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true}); 
-                updateMoney({money: money});
             } else {
                 const recommend = bookSays(true, gameObj.playerHasDoubles(player, handIndex), handIndex);
                 setFormData({...formData, outcomes: currentHandOutcome, recommendationState: recommend});
@@ -165,7 +162,6 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
             if (totalHands-1 == handIndex ) {
                 gameObj.dealerPlaySplit();
                 setFormData({...formData, dealer: dealerHandObj.hand, hands: gameObj.players[player].hands, outcomes: currentHandOutcome.length > 0 ?  currentHandOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true}); 
-                updateMoney({money: money});
             } else {
                 const recommend = bookSays(true, gameObj.playerHasDoubles(player, handIndex), handIndex);
                 setFormData({...formData, hands: gameObj.players[0].hands, outcomes: currentHandOutcome, recommendationState: recommend});
@@ -185,7 +181,6 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
             if (gameObj.currentGameOutcome[0] == 'Push') newTotal = parseInt(newTotal) + parseInt(betAmount);
             else if (gameObj.currentGameOutcome[0] == 'Win') newTotal = parseInt(newTotal) + parseInt(parseInt(betAmount)*2);
         }
-        updateMoney({money: newTotal});
         setFormData({...formData, dealer: dealerHandObj.hand, outcomes: gameObj.currentGameOutcome,  disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true, money: newTotal});
     };
 
@@ -198,7 +193,6 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
         if (totalHands-1 == handIndex ) {
             gameObj.dealerPlaySplit();
             const dealerHandObj = gameObj.players.slice(-1)[0];
-            updateMoney({money: money});
             setFormData({...formData, dealer: dealerHandObj.hand, hands: gameObj.players[player].hands, outcomes: gameObj.currentGameOutcome, disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true}); 
         } else {
             gameObj.hitSplitHand(player, handIndex+1);
@@ -218,7 +212,6 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
             else if (gameObj.currentGameOutcome[0] == 'Win') newTotal = parseInt(newTotal) + parseInt(parseInt(betAmount)*3);
             else newTotal = parseInt(newTotal) - parseInt(betAmount);
         }
-        updateMoney({money: newTotal});
         const recommend = bookSays();
         setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hand: gameObj.players[0].hand, dealer: gameObj.players[gameObj.players.length -1].hand, disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true, money: newTotal, recommendationState: recommend });
     }
@@ -233,7 +226,6 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
         if (totalHands-1 == handIndex ) {
             gameObj.dealerPlaySplit();
             dealerHandObj = gameObj.players.slice(-1)[0];
-            updateMoney({money: money});
             setFormData({...formData, dealer: dealerHandObj.hand, hands: gameObj.players[player].hands, outcomes: currentHandOutcome.length > 0 ?  currentHandOutcome : [], disableDeal: false, disableHit: true,  disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true}); 
         } else {
             gameObj.hitSplitHand(player, handIndex+1);
@@ -254,7 +246,6 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
         }
         if (cardValue == 'A') {
             gameObj.splitAce(player);
-            updateMoney({money: money});
             setFormData({...formData,  outcomes: gameObj.currentGameOutcome, hand: [],  hands: gameObj.players[player].hands, dealer: gameObj.players[gameObj.players.length -1].hand, disableDeal: false, disableHit: true, disableDouble: true, disableSplit: true, disableStay: true, showDealerCards: true });
         } else {
             dealerHandObj = gameObj.players.slice(-1)[0];
@@ -340,7 +331,6 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
 
 Learn.propTypes = {
     getCurrentProfile: PropTypes.func.isRequired,
-    updateMoney: PropTypes.func.isRequired,
     setAlert: PropTypes.func.isRequired,
     profile: PropTypes.object.isRequired,
     // blackjack: PropTypes.object.isRequired,
@@ -351,4 +341,4 @@ const mapStateToProps = state => ({
     profile: state.profile.profile
 })
 
-export default connect(mapStateToProps, {setAlert, getCurrentProfile, updateMoney})(Learn)
+export default connect(mapStateToProps, {setAlert, getCurrentProfile})(Learn)
