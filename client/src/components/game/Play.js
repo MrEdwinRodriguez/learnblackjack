@@ -1,6 +1,6 @@
 import React, {Fragment ,useEffect, useState, useRef} from 'react'
 import PropTypes from 'prop-types';
-import {Link, Redirect} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import  { connect } from 'react-redux';
 import { setAlert } from "../../actions/alert";
 import { getCurrentProfile, updateMoney } from '../../actions/profile';
@@ -34,11 +34,10 @@ const Play = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, profi
         splitHandNumber: null,
         showDealerCards: false,
         shuffleDeck: false,
-        bidWarning: false,
-        bidWarningMax: false,
+        bidWarning: null,
         profileLoaded: false,
     })
-    let {money, hand, hands, dealer, gamePlayers, outcomes, disableDeal, disableHit, disableDouble, disableSplit, disableStay, showHitSplit, splitHandNumber, showDealerCards, betAmount, bidWarning, shuffleDeck, profileLoaded, bidWarningMax } = formData;
+    let {money, hand, hands, dealer, gamePlayers, outcomes, disableDeal, disableHit, disableDouble, disableSplit, disableStay, showHitSplit, splitHandNumber, showDealerCards, betAmount, bidWarning, shuffleDeck, profileLoaded } = formData;
 
 
     if (profile && !profileLoaded) {
@@ -86,27 +85,35 @@ const Play = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, profi
     const target = useRef(null);
 
     const deal = (players = 2) => {
-        if (betAmount < 10) {
-            setFormData({ ...formData, bidWarning: true})
-            return false;
-        } else if (betAmount > 100) {
-            setFormData({ ...formData, bidWarningMax: true})
-            return false;
+        // if (betAmount < 10) {
+        //     setFormData({ ...formData, bidWarning: "Minimum Bet is $10"})
+        //     return false;
+        // } else if (betAmount > 100) {
+        //     setFormData({ ...formData, bidWarning: "Maximum Bet is $100"})
+        //     return false;
+        // } else if (betAmount > money) {
+        //     setFormData({ ...formData, bidWarning: 'You Do Not Enough Money for this bet'})
+        //     return false;
+        // } else 
+        if (money < 1000 ) {
+            const learnLink = <Link to="/learn-black-jack">Learn BlackJack</Link>
+            setFormData({ ...formData, bidWarning: 'You Do Not Enough Money to play at this table, go to "Learn Blackjack" to earn credits'})
+            return false
         }
         const evaluateInitialHand = gameObj.startblackjack(players);
         dealerHandObj = gameObj.players.slice(-1)[0];
         if (!evaluateInitialHand.hasBlackJack) {
             if (evaluateInitialHand.playerHasDoubles) {
-                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false, outcomes: [], showDealerCards: false, showHitSplit: false, money: money - betAmount, bidWarning: false, bidWarningMax: false});
+                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false, outcomes: [], showDealerCards: false, showHitSplit: false, money: money - betAmount, bidWarning: null});
             } else {
-                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: false, money: money - betAmount, bidWarning: false, bidWarningMax: false});
+                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: false, money: money - betAmount, bidWarning: null});
             }
         } else {
             let newTotal = money;
             if (gameObj.currentGameOutcome[0] == 'Push') newTotal = parseInt(newTotal) + parseInt(betAmount);
             else if (gameObj.currentGameOutcome[0] == 'Win') newTotal = parseInt(newTotal) + parseInt(betAmount) + (parseInt(betAmount)*1.5);
             else newTotal = parseInt(newTotal) - parseInt(betAmount);
-            setFormData({ ...formData, hands: [], dealer: dealerHandObj.hand, hand: gameObj.players[0].hand,  outcomes: gameObj.currentGameOutcome, showHitSplit: false, money: newTotal, bidWarning: false, showDealerCards: true, bidWarningMax: false })
+            setFormData({ ...formData, hands: [], dealer: dealerHandObj.hand, hand: gameObj.players[0].hand,  outcomes: gameObj.currentGameOutcome, showHitSplit: false, money: newTotal, bidWarning: null, showDealerCards: true })
         } 
     };
 
@@ -290,17 +297,11 @@ const Play = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, profi
                         <div className='blackjack-buttons'>
                             <div>
                                 <button type="button" ref={target} className="btn btn-success" onClick={() => deal()} disabled={disableDeal} >Deal</button>
-                                <Overlay target={target.current} show={bidWarning} placement="top">
+                                <Overlay target={target.current} show={bidWarning ? true : false} placement="top">
                                     {(props) => (
                                     <Tooltip className="overlay-bid" {...props}>
-                                        Minimum bet of $10
-                                    </Tooltip>
-                                    )}
-                                </Overlay>
-                                <Overlay target={target.current} show={bidWarningMax} placement="top">
-                                    {(props) => (
-                                    <Tooltip className="overlay-bid" {...props}>
-                                        Miximum bet is $100
+                                        {bidWarning}
+                                        {/* Minimum bet of $10 */}
                                     </Tooltip>
                                     )}
                                 </Overlay>
