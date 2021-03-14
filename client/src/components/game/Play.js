@@ -85,18 +85,16 @@ const Play = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, profi
     const target = useRef(null);
 
     const deal = (players = 2) => {
-        // if (betAmount < 10) {
-        //     setFormData({ ...formData, bidWarning: "Minimum Bet is $10"})
-        //     return false;
-        // } else if (betAmount > 100) {
-        //     setFormData({ ...formData, bidWarning: "Maximum Bet is $100"})
-        //     return false;
-        // } else if (betAmount > money) {
-        //     setFormData({ ...formData, bidWarning: 'You Do Not Enough Money for this bet'})
-        //     return false;
-        // } else 
-        if (money < 1000 ) {
-            const learnLink = <Link to="/learn-black-jack">Learn BlackJack</Link>
+        if (betAmount < 10) {
+            setFormData({ ...formData, bidWarning: "Minimum Bet is $10"})
+            return false;
+        } else if (betAmount > 100) {
+            setFormData({ ...formData, bidWarning: "Maximum Bet is $100"})
+            return false;
+        } else if (betAmount > money) {
+            setFormData({ ...formData, bidWarning: 'You Do Not Enough Money for this bet'})
+            return false;
+        } else if (money < 10 ) {
             setFormData({ ...formData, bidWarning: 'You Do Not Enough Money to play at this table, go to "Learn Blackjack" to earn credits'})
             return false
         }

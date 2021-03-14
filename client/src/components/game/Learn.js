@@ -38,12 +38,12 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
         showRecommendation: false,
         recommendationState: null,
         shuffleDeck: false,
-        bidWarning: false,
-        bidWarningMax: false,
+        bidWarning: null,
         profileLoaded: false,
         strategy: null,
+        showRestart: false
     })
-    let {money, hand, hands, dealer, gamePlayers, outcomes, disableDeal, disableHit, disableDouble, disableSplit, disableStay, showHitSplit, splitHandNumber, showDealerCards, showRecommendation, recommendationState, betAmount, bidWarning, shuffleDeck, profileLoaded, strategy, profileMoney, bidWarningMax } = formData;
+    let {money, hand, hands, dealer, gamePlayers, outcomes, disableDeal, disableHit, disableDouble, disableSplit, disableStay, showHitSplit, splitHandNumber, showDealerCards, showRecommendation, recommendationState, betAmount, bidWarning, shuffleDeck, profileLoaded, strategy, profileMoney, showRestart } = formData;
 
 
     if (profile && !profileLoaded) {
@@ -99,28 +99,34 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
 
     const deal = (players = 2) => {
         if (betAmount < 10) {
-            setFormData({ ...formData, bidWarning: true})
+            setFormData({ ...formData, bidWarning: "Minimum Bet is $10"})
             return false;
         } else if (betAmount > 100) {
-            setFormData({ ...formData, bidWarningMax: true})
+            setFormData({ ...formData, bidWarning: "Maximum Bet is $100"})
             return false;
+        } else if (betAmount > money) {
+            setFormData({ ...formData, bidWarning: 'You Do Not Enough Money for this bet'})
+            return false;
+        } else if (money < 10 ) {
+            setFormData({ ...formData, showRestart: true, bidWarning: 'You ran out of Learn credits. Hit Restart to begin new learning session '})
+            return false
         }
         const evaluateInitialHand = gameObj.startblackjack(players);
         dealerHandObj = gameObj.players.slice(-1)[0];
         if (!evaluateInitialHand.hasBlackJack) {
             if (evaluateInitialHand.playerHasDoubles) {
                 const recommend = bookSays(true, true);
-                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false, outcomes: [], showDealerCards: false, showHitSplit: false, showRecommendation: true, recommendationState: recommend, money: money - betAmount, bidWarning: false, bidWarningMax: false});
+                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, disableSplit: false, outcomes: [], showDealerCards: false, showHitSplit: false, showRecommendation: true, recommendationState: recommend, money: money - betAmount, bidWarning: null});
             } else {
                 const recommend = bookSays(true, false);
-                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: false, showRecommendation: true, recommendationState: recommend, money: money - betAmount, bidWarning: false, bidWarningMax: false});
+                setFormData({ ...formData, hand: gameObj.players[0].hand, hands: [], dealer: dealerHandObj.hand, gamePlayers: gameObj.players, disableDeal: true, disableHit: false, disableDouble: false, disableStay: false, outcomes: [], showDealerCards: false, showHitSplit: false, showDealerCards: false, showRecommendation: true, recommendationState: recommend, money: money - betAmount, bidWarning: null});
             }
         } else {
             let newTotal = money;
             if (gameObj.currentGameOutcome[0] == 'Push') newTotal = parseInt(newTotal) + parseInt(betAmount);
             else if (gameObj.currentGameOutcome[0] == 'Win') newTotal = parseInt(newTotal) + parseInt(betAmount) + (parseInt(betAmount)*1.5);
             else newTotal = parseInt(newTotal) - parseInt(betAmount);
-            setFormData({ ...formData, hands: [], dealer: dealerHandObj.hand, hand: gameObj.players[0].hand,  outcomes: gameObj.currentGameOutcome, showHitSplit: false, money: newTotal, bidWarning: false, showDealerCards: true, bidWarningMax: false })
+            setFormData({ ...formData, hands: [], dealer: dealerHandObj.hand, hand: gameObj.players[0].hand,  outcomes: gameObj.currentGameOutcome, showHitSplit: false, money: newTotal, bidWarning: null, showDealerCards: true })
         } 
     };
 
@@ -285,6 +291,11 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
         }
     }
 
+    const restartLearn = () =>{
+        console.log('line 295')
+        window.location.reload();
+    }
+
     // ));
     return (
         <Fragment>
@@ -322,17 +333,11 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
                         <div className='blackjack-buttons'>
                             <div>
                                 <button type="button" ref={target} className="btn btn-success" onClick={() => deal()} disabled={disableDeal} >Deal</button>
-                                <Overlay target={target.current} show={bidWarning} placement="top">
+                                <Overlay target={target.current} show={bidWarning ? true : false} placement="top">
                                     {(props) => (
                                     <Tooltip className="overlay-bid" {...props}>
-                                        Minimum bet of $10
-                                    </Tooltip>
-                                    )}
-                                </Overlay>
-                                <Overlay target={target.current} show={bidWarningMax} placement="top">
-                                    {(props) => (
-                                    <Tooltip className="overlay-bid" {...props}>
-                                        Miximum bet is $100
+                                        {bidWarning}
+                                        {/* Minimum bet of $10 */}
                                     </Tooltip>
                                     )}
                                 </Overlay>
@@ -340,6 +345,7 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
                                 <button type="button" className="btn btn-success" onClick={() => {!showHitSplit ? double() : doubleSplit()}} disabled={disableDouble}>Double</button>
                                 <button type="button" className="btn btn-success" onClick={() => split()} disabled={disableSplit}>Split</button>
                                 <button type="button" className="btn btn-danger" onClick={() => {!showHitSplit ? stay() : staySplit()}} disabled={disableStay}>Stay</button>
+                                {showRestart ? <button type="button" className="btn btn-danger" onClick={() => restartLearn()} >Restart</button>: <div></div> }
                             </div>
                         </div>
                     </div>
