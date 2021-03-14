@@ -19,14 +19,13 @@ export const Navbar = ({auth: {isAuthenticated, loading }, logout}) => {
     <ul>
       <li><Link to="/register">Register</Link></li>
       <li><Link to="login">Login</Link></li>
-      <li><Link to="login">Guest</Link></li>
     </ul>
   );
 
   return (
       <nav className="navbar bg-dark">
       <h1>
-        <Link to="/">Learn and Play Blackjack</Link>
+        <Link to={ isAuthenticated ? '/dashboard' : "/" }>Learn and Play Blackjack</Link>
       </h1>
       { !loading && (<Fragment>{ isAuthenticated ? authLinks : guestLinks } </Fragment>) }
     </nav>
