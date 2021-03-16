@@ -25,7 +25,7 @@ const Login = ({ login, isAuthenticated }) => {
         <Fragment>
             <section className="landing">
             <div className="dark-overlay">
-            <div className='container'>
+            <div className='container fill'>
             <div className="signup-form">
                 <form className="form" onSubmit={e => onSubmit(e)}>
                 <h2>Sign In</h2>

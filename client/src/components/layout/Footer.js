@@ -9,7 +9,7 @@ const Footer = () => {
     <div>
       <div className='phantom' />
       <div className="footer text-light mt-5 p-4 text-center" >
-          Copyright &copy; { new Date().getFullYear()} Learn Black Jack
+          Copyright &copy; { new Date().getFullYear()} Learn Blackjack
       </div>
   </div>
   )

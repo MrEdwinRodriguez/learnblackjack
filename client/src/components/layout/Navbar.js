@@ -9,10 +9,10 @@ export const Navbar = ({auth: {isAuthenticated, loading }, logout}) => {
     <ul>
       <li>
       <i class="fas fa-money-bill-wave-alt"></i>
-        <Link to="/play-black-jack">Play Blackjack</Link></li>
+        <Link to="/play-black-jack">Play</Link></li>
       <li>
 
-        <Link to="/learn-black-jack"><i className='fab fa-leanpub'></i>{" "}Learn Blackjack</Link></li>
+        <Link to="/learn-black-jack"><i className='fab fa-leanpub'></i>{" "}Learn</Link></li>
       <li>
         <a onClick={logout} href="#!">
         <i className='fas fa-sign-out-alt'></i>{" "}
