@@ -277,7 +277,7 @@ const Play = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, profi
                             <h2 className='table-title'>BlackJack</h2>
                             <h5 className='table-pays'>Pays 2 to 3</h5>
                             <h5 className='table-dealer-stands'>Dealer Stand on 17</h5>
-                             <div className='hold-player-one'>
+                             <div className='hold-player-one play-only'>
                                 <div class='player-position-one'>
                                     <ul className='cardList'>
                                         {playerHand ? playerHand : <li></li>}

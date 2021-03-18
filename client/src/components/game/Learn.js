@@ -330,7 +330,7 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
                             <input className="form-control bet-input" type="number" id="betAmount" min="10" max="100" step="1" placeholder=" Min $10" value={betAmount} onChange={e => setBet(e)} />
                         </div>
                         <div class="row justify-content-md-center blackjack-buttons">
-                            <div class="col col-lg-2">
+                            <div class="col col-xs-12">
                                 <button type="button" ref={target} className="btn btn-success" onClick={() => deal()} disabled={disableDeal} >Deal</button>
                                 <Overlay target={target.current} show={bidWarning ? true : false} placement="top">
                                     {(props) => (
@@ -340,19 +340,19 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
                                     )}
                                 </Overlay>
                             </div>
-                            <div class="col-md-auto">
+                            <div class="col-xs-12">
                                 <button type="button" className="btn btn-success" onClick={() => {!showHitSplit ? hitMe() : hitSplit()}} disabled={disableHit} >Hit</button>
                             </div>
-                            <div class="col-md-auto">
+                            <div class="col-xs-12">
                                 <button type="button" className="btn btn-success" onClick={() => {!showHitSplit ? double() : doubleSplit()}} disabled={disableDouble}>Double</button>
                             </div>
-                            <div class="col-md-auto">
+                            <div class="col-xs-12">
                                 <button type="button" className="btn btn-success" onClick={() => split()} disabled={disableSplit}>Split</button>
                             </div>
-                            <div class="col-md-auto">
+                            <div class="col-xs-12">
                                 <button type="button" className="btn btn-danger" onClick={() => {!showHitSplit ? stay() : staySplit()}} disabled={disableStay}>Stay</button>
                             </div>
-                            <div class="col col-lg-2">
+                            <div class="col col-xs-12">
                                 {showRestart ? <button type="button" className="btn btn-danger" onClick={() => restartLearn()} >Restart</button>: <div></div> }
                             </div>
                         </div>

@@ -14,12 +14,17 @@
   padding: 0;
 }
 
-body {
+/* html {
+  min-height: 100vh;
+} */
+
+html, body {
   font-family: 'Raleway', sans-serif;
   font-size: 1rem;
   line-height: 1.6;
   background-color: #fff;
   color: #333;
+  height: 800px;
 }
 
 a {
@@ -37,7 +42,8 @@ img {
 
 /* Utilities */
 .container {
-  max-width: 1100px;
+  /* max-width: 1100px; */
+  max-height: 100vh;
   margin: auto;
   overflow: hidden;
   padding: 0 2rem;
@@ -369,6 +375,7 @@ button {
 .landing {
   position: relative;
   background: url('./img/blackjack.jpg') no-repeat center center/cover;
+  /* height: 100%; */
   height: 100vh;
 }
 
@@ -734,7 +741,7 @@ button {
 .table {
   /* position: absolute; */
   width: 100%;
-  height: 600px;
+  height: 520px;
   background-color: var(--primary-color);
   border-bottom-left-radius: 480px;
   border-bottom-right-radius: 480px;
@@ -760,14 +767,14 @@ button {
 
 .table-pays {
   text-align: center;
-  font-size: 30px;
+  font-size: 20px;
   color: #000 !important;
   padding-top: -20px;
 }
 
 .table-dealer-stands {
   text-align: center;
-  font-size: 30px;
+  font-size: 25px;
   color: #000 !important;
 }
 
@@ -778,8 +785,8 @@ button {
 
 .hold-dealer {
   width: 100%;
-  padding-top: 30px;
-  height: 120px;
+  padding-top: 10px;
+  height: 100px;
 }
 
 .player-position-one {
@@ -858,6 +865,9 @@ button {
   margin-left: 10px;
 }
 
+.play-only {
+  margin-top: 20px;
+} 
 .cardList{
   display: table;
   margin: 0 auto;
@@ -929,3 +939,69 @@ button:disabled {
 .recommend-text {
   color: red;
 }
+
+@media (max-width:600px){
+  .table {
+    height: 450px;
+  }
+  .card {
+    width: 3em;
+    height: 5em;
+  }
+  .card-topleft {
+    position: relative;
+    left: 0.75em;
+  }
+.card-bottomright {
+  position: relative;
+  bottom: 20px;
+  right: 0.75em;
+  transform: rotate(180deg);
+  }
+  .table-title {
+    font-size: 50px;
+  }
+  .table-pays {
+    font-size: 15px;
+  }
+  .table-dealer-stands {
+    font-size: 18px;
+  }
+
+  .play-only {
+    margin-top: 30px;
+  }
+
+  .card-corner-suit-small{
+    margin: auto;
+    /* margin-left: 30px !important; */
+    /* margin-top: 10px !important; */
+
+  }
+
+  .card-corner-suit-small-bottom {
+    display: none;
+  }
+
+  .card-corner-rank-small-bottom{
+    margin-top: 20px !important;
+  }
+
+}
+
+/* .table {
+
+  width: 100%;
+  height: 600px;
+  background-color: var(--primary-color);
+  border-bottom-left-radius: 480px;
+  border-bottom-right-radius: 480px;
+  border: 30px solid black;
+  border-top: 0;
+  background-color: black;
+  background-image:
+    radial-gradient(
+      #EDF5E1,
+      #379683
+    );
+} */
