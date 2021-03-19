@@ -24,7 +24,8 @@ html, body {
   line-height: 1.6;
   background-color: #fff;
   color: #333;
-  height: 800px;
+  height: 100%;
+  /* height: 800px; */
 }
 
 a {
@@ -925,6 +926,10 @@ button:disabled {
   position: absolute;
 }
 
+.btn-group-vertical {
+  display: none;
+}
+
 /* rules */
 .rules {
   color: var(--primary-color);
@@ -989,19 +994,134 @@ button:disabled {
 
 }
 
-/* .table {
+@media (max-height:790px){
+  .footer {
+    display: none;
+  }
+}
 
-  width: 100%;
-  height: 600px;
-  background-color: var(--primary-color);
-  border-bottom-left-radius: 480px;
-  border-bottom-right-radius: 480px;
-  border: 30px solid black;
-  border-top: 0;
-  background-color: black;
-  background-image:
-    radial-gradient(
-      #EDF5E1,
-      #379683
-    );
-} */
+
+
+@media (max-height:730px){
+  .table {
+    height: 450px;
+  }
+  .card {
+    width: 3em;
+    height: 5em;
+  }
+  .card-topleft {
+    position: relative;
+    left: 0.75em;
+  }
+.card-bottomright {
+  position: relative;
+  bottom: 20px;
+  right: 0.75em;
+  transform: rotate(180deg);
+  }
+  .table-title {
+    font-size: 50px;
+  }
+  .table-pays {
+    font-size: 15px;
+  }
+  .table-dealer-stands {
+    font-size: 18px;
+  }
+
+  .play-only {
+    margin-top: 30px;
+  }
+
+  .card-corner-suit-small{
+    margin: auto;
+    /* margin-left: 30px !important; */
+    /* margin-top: 10px !important; */
+
+  }
+
+  .card-corner-suit-small-bottom {
+    display: none;
+  }
+
+  .card-corner-rank-small-bottom{
+    margin-top: 20px !important;
+  }
+}
+
+
+@media (max-height:425px){
+  .table {
+    height: 240px;
+  }
+  .card {
+    width: 3em;
+    height: 5em;
+  }
+  .card-topleft {
+    position: relative;
+    left: 0.75em;
+  }
+.card-bottomright {
+  position: relative;
+  bottom: 20px;
+  right: 0.75em;
+  transform: rotate(180deg);
+  }
+  .table-title {
+    font-size: 50px;
+  }
+  .table-pays {
+    font-size: 15px;
+  }
+  .table-dealer-stands {
+    font-size: 18px;
+  }
+
+  .play-only {
+    margin-top: 30px;
+  }
+
+  .card-corner-suit-small{
+    margin: auto;
+  }
+
+  .card-corner-suit-small-bottom {
+    display: none;
+  }
+
+  .card-corner-rank-small-bottom{
+    margin-top: 20px !important;
+  }
+
+  .table-title,
+  .table-pays, 
+  .table-dealer-stands {
+    display: none;
+  }
+}
+
+@media (max-height:665px){ 
+  .btn-group-vertical {
+    display: block;
+    position: absolute;
+    width: 30%;
+    top: 60px;
+  }
+
+  .blackjack-buttons {
+    display: none;
+  }
+
+  .btn-group-vertical .btn {
+    width: 30%;
+  }
+
+  .bet {
+    display: block;
+    position: absolute;
+    top: 300px;
+  }
+
+}

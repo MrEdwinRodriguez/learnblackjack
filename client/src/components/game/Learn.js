@@ -332,7 +332,7 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
                         <div class="row justify-content-md-center blackjack-buttons">
                             <div class="col col-xs-12">
                                 <button type="button" ref={target} className="btn btn-success" onClick={() => deal()} disabled={disableDeal} >Deal</button>
-                                <Overlay target={target.current} show={bidWarning ? true : false} placement="top">
+                                <Overlay target={target.current} show={bidWarning ? true : false} placement="right">
                                     {(props) => (
                                     <Tooltip className="overlay-bid" {...props}>
                                         {bidWarning}
@@ -355,6 +355,21 @@ const Learn = ({getCurrentProfile, updateMoney, setOutcome, setAlert, auth, prof
                             <div class="col col-xs-12">
                                 {showRestart ? <button type="button" className="btn btn-danger" onClick={() => restartLearn()} >Restart</button>: <div></div> }
                             </div>
+                        </div>
+                        <div className = "btn-group-vertical">
+                            <button type="button" ref={target} className="btn btn-success" onClick={() => deal()} disabled={disableDeal} >Deal</button>
+                                <Overlay target={target.current} show={bidWarning ? true : false} placement="right">
+                                    {(props) => (
+                                    <Tooltip className="overlay-bid" {...props}>
+                                        {bidWarning}
+                                    </Tooltip>
+                                    )}
+                                </Overlay>
+                            <button type="button" className="btn btn-success" onClick={() => {!showHitSplit ? hitMe() : hitSplit()}} disabled={disableHit} >Hit</button>
+                            <button type="button" className="btn btn-success" onClick={() => {!showHitSplit ? double() : doubleSplit()}} disabled={disableDouble}>Double</button>
+                            <button type="button" className="btn btn-success" onClick={() => split()} disabled={disableSplit}>Split</button>
+                            <button type="button" className="btn btn-danger" onClick={() => {!showHitSplit ? stay() : staySplit()}} disabled={disableStay}>Stay</button>
+                            {showRestart ? <button type="button" className="btn btn-danger" onClick={() => restartLearn()} >Restart</button>: <div></div> }
                         </div>
                     </div>
                 </div>
