@@ -17,7 +17,7 @@ const Dashboard = ({getCurrentProfile, auth, profile}) => {
                     <div className="signup-form">
                         <div>
                         <h2 className='text-primary-dashboard'>PLAY & LEARN</h2>
-                            <div class="btn-group-vertical">
+                            <div class="btn-group-vertical dashboard-buttons">
                                 <Link to='play-black-jack' class="btn btn-primary">Play Black Jack</Link>
                                 <Link to='learn-black-jack' class="btn btn-primary">Learn Black Jack</Link>
                                 <Link to='rules' class="btn btn-primary">Rules</Link>

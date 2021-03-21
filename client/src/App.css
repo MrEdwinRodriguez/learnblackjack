@@ -930,6 +930,10 @@ button:disabled {
   display: none;
 }
 
+.dashboard-buttons {
+  display: block;
+}
+
 /* rules */
 .rules {
   color: var(--primary-color);
