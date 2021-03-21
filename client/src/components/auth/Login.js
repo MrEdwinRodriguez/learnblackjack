@@ -40,7 +40,7 @@ const Login = ({ login, isAuthenticated }) => {
                 </div>
                 </form>
                 <div className="text-center text-primary">Forgot Password? <Link to="register" className="text-light">Send Password</Link></div>
-                <div className="text-center text-primary">Don't have an account? <Link to="register" className="text-light">Registr</Link></div>
+                <div className="text-center text-primary">Don't have an account? <Link to="register" className="text-light">Register</Link></div>
             </div>
             </div></div>
             </section>
