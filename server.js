@@ -10,7 +10,7 @@ app.use(express.json({ extended: false }));
 
 const PORT = process.env.PORT || 5001;
 
-//Define routes
+//Define routes 
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/profile', require('./routes/api/profile'));
 app.use('/api/auth', require('./routes/api/auth'));
