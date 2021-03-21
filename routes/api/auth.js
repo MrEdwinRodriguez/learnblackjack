@@ -6,7 +6,7 @@ const { check, validationResult } = require('express-validator');
 // const config = require('config');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const keys = require('../config/keys');
+const keys = require('../../config/keys');
 
 // GET api/auth
 // authenticate

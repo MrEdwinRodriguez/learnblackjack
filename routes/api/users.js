@@ -7,7 +7,7 @@ const Profile = require('../../models/Profile');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const auth = require('../../middleware/auth');
-const keys = require('../config/keys');
+const keys = require('../../config/keys');
 
 // POST api/users
 // register user
