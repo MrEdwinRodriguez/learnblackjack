@@ -5,7 +5,7 @@ const keys = require('../config/keys');
 
 const connectDB  = async () => {
     const opts =  {};
-    opts.jwtSecret = keys.jwtSecret ? keys.jwtSecret : keys.secretOrKey;
+    opts.jwtSecret = keys.secretOrKey;
     opts.mongoURI = keys.mongoURI;
     try {
         await mongoose.connect(opts.mongoURI, { 

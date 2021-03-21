@@ -3,10 +3,11 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const User = require('../../models/User');
 const Profile = require('../../models/Profile');
-const config = require('config');
+// const config = require('config');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const auth = require('../../middleware/auth');
+const keys = require('../config/keys');
 
 // POST api/users
 // register user
@@ -46,9 +47,11 @@ router.post('/', [
                 id: user.id
             }
         }
+        const opts =  {};
+        opts.jwtSecret = keys.secretOrKey;
         jwt.sign(
             payload, 
-            config.get('jwtSecret'),
+            opts.jwtSecret,
             { expiresIn: 360000},
             (err, token) => {
                 if (err) throw err
