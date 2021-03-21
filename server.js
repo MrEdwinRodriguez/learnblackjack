@@ -3,7 +3,6 @@ const connectDB = require('./config/db');
 const app = express();
 const path = require('path');
 //connnect database
-console.log('environment: ', process.env)
 connectDB();
 
 //init middleware
